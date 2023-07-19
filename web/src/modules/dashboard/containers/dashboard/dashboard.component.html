@@ -1,0 +1,9 @@
+<sb-layout-dashboard>
+  <sb-dashboard-head title="Dashboard" [hideBreadcrumbs]="false"></sb-dashboard-head>
+  <h2 *ngIf="nOfTestsLoaded === 0">No tests loaded.</h2>
+  <div *ngIf="nOfTestsLoaded > 0">
+    <sb-dashboard-cards></sb-dashboard-cards>
+    <sb-dashboard-charts></sb-dashboard-charts>
+    <sb-dashboard-tables></sb-dashboard-tables>
+  </div>
+</sb-layout-dashboard>

@@ -1,35 +1,37 @@
 <form>
-  <div class="form-group form-inline">Full text search: <input class="form-control ml-2" type="text" name="searchTerm"
-      [(ngModel)]="testResultService.searchTerm" /><span class="ml-3"
-      *ngIf="testResultService.loading$ | async">Loading...</span></div>
-  <table class="table table-striped">
+  <div class="form-group form-inline">Full text search: <input class="form-control col-3 ml-2" type="text"
+      name="searchTerm" [(ngModel)]="testResultService.searchTerm" />
+    <span class="ml-3" *ngIf="testResultService.loading$ | async">Loading...</span>
+  </div>
+  <table class="table table-hover table-responsive">
     <thead>
       <tr>
-        <th scope="col">#</th>
         <th scope="col" sbSortable="name" (sort)="onSort($event)"><span>Name</span><sb-sort-icon
             *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon></th>
         <th scope="col" sbSortable="className" (sort)="onSort($event)"><span>Class Name</span><sb-sort-icon
             *ngIf='sortedColumn === "className"' [direction]="sortedDirection"></sb-sort-icon></th>
-        <th scope="col" sbSortable="description" (sort)="onSort($event)"><span>Description</span><sb-sort-icon
-            *ngIf='sortedColumn === "description"' [direction]="sortedDirection"></sb-sort-icon></th>
+        <th scope="col" sbSortable="description" (sort)="onSort($event)">
+          <span>Description</span><sb-sort-icon *ngIf='sortedColumn === "description"'
+            [direction]="sortedDirection"></sb-sort-icon>
+        </th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let testResult of results$ | async">
-        <th scope="row">{{ testResult.id }}</th>
-        <td>{{ testResult.outcome === 'Passed' ? '✅' : '❎' }}
+        <th scope="row">{{ testResult.outcome === 'Passed' ? '✅' : '❎' }}
           <ngb-highlight [result]="testResult.name" [term]="testResultService.searchTerm"></ngb-highlight>
-        </td>
+        </th>
         <td><ngb-highlight [result]="testResult.className" [term]="testResultService.searchTerm"></ngb-highlight>
         </td>
         <td><ngb-highlight [result]="testResult.description" [term]="testResultService.searchTerm"></ngb-highlight></td>
       </tr>
     </tbody>
   </table>
-  <div class="d-flex justify-content-between p-2">
+  <div class="d-flex justify-content-center p-2">
     <ngb-pagination [collectionSize]="total$ | async" [(page)]="testResultService.page"
-      [pageSize]="testResultService.pageSize"></ngb-pagination><select class="custom-select" style="width: auto"
-      name="pageSize" [(ngModel)]="testResultService.pageSize">
+      [pageSize]="testResultService.pageSize" [boundaryLinks]="true" [maxSize]="10">
+    </ngb-pagination>
+    <select class="custom-select ml-2" style="width: auto" name="pageSize" [(ngModel)]="testResultService.pageSize">
       <option [ngValue]="8">8 items per page</option>
       <option [ngValue]="10">10 items per page</option>
       <option [ngValue]="20">20 items per page</option>

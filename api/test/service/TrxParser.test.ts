@@ -1,8 +1,10 @@
-import { expect, describe, it } from 'vitest';
-import { TrxParser } from '../../src/services/TrxParser';
+import { describe, expect, it } from "vitest";
+import { TrxParser } from "../../src/services/TrxParser";
 
-describe('TrxParser', () => {
-  it('should parse trx structure with multiple tests', async () => {
+describe("TrxParser", () => {
+  it("should parse trx structure with multiple tests", async () => {
+    const createdAt = new Date();
+
     const trx = `
       <TestRun id="2c9c0c7a-9a0b-4a9d-9ba1-0d8a2d0c9f4e" name="test" runUser="DESKTOP-1" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
         <Times creation="2023-06-21T10:49:20.1894813+01:00" queuing="2023-06-21T10:49:20.1894813+01:00" start="2023-06-21T10:48:54.0738344+01:00" finish="2023-06-21T12:23:10.5068209+01:00" />
@@ -68,6 +70,7 @@ describe('TrxParser', () => {
         total: 469,
         warning: 0,
       },
+      createdAt,
       testResults: [
         {
           className: "Sample.ClassName",
@@ -90,7 +93,7 @@ describe('TrxParser', () => {
           outcome: "Passed",
           startTime: "2023-06-21T11:03:33.5080335+01:00",
           testType: "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-        }
+        },
       ],
       times: {
         creation: "2023-06-21T10:49:20.1894813+01:00",
@@ -101,12 +104,14 @@ describe('TrxParser', () => {
     };
 
     const parser = new TrxParser();
-    const result = parser.parse(trx);
+    const result = parser.parse(trx, createdAt);
 
     expect(result).toEqual(exptected);
   });
 
-  it('should parse a trx file with a single test', () => {
+  it("should parse a trx file with a single test", () => {
+    const createdAt = new Date();
+
     const trx = `
       <TestRun id="2c9c0c7a-9a0b-4a9d-9ba1-0d8a2d0c9f4e" name="test" runUser="DESKTOP-1" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
         <Times creation="2023-06-21T10:49:20.1894813+01:00" queuing="2023-06-21T10:49:20.1894813+01:00" start="2023-06-21T10:48:54.0738344+01:00" finish="2023-06-21T12:23:10.5068209+01:00" />
@@ -159,6 +164,7 @@ describe('TrxParser', () => {
         total: 469,
         warning: 0,
       },
+      createdAt,
       testResults: [
         {
           className: "Sample.ClassName",
@@ -170,7 +176,8 @@ describe('TrxParser', () => {
           outcome: "Passed",
           startTime: "2023-06-21T11:31:20.9626294+01:00",
           testType: "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-        }],
+        },
+      ],
       times: {
         creation: "2023-06-21T10:49:20.1894813+01:00",
         duration: "01:34:16",
@@ -180,12 +187,12 @@ describe('TrxParser', () => {
     };
 
     const parser = new TrxParser();
-    const result = parser.parse(trx);
+    const result = parser.parse(trx, createdAt);
 
     expect(result).toEqual(exptected);
   });
 
-  it('should give an error when there are no results ', () => {
+  it("should give an error when there are no results ", () => {
     const trx = `
       <TestRun id="2c9c0c7a-9a0b-4a9d-9ba1-0d8a2d0c9f4e" name="test" runUser="DESKTOP-1" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
         <Times creation="2023-06-21T10:49:20.1894813+01:00" queuing="2023-06-21T10:49:20.1894813+01:00" start="2023-06-21T10:48:54.0738344+01:00" finish="2023-06-21T12:23:10.5068209+01:00" />
@@ -209,12 +216,11 @@ describe('TrxParser', () => {
       </TestRun>
     `;
 
-
     const parser = new TrxParser();
-    expect(() => parser.parse(trx)).toThrowError('Invalid file structure');
+    expect(() => parser.parse(trx, new Date())).toThrowError("Invalid file structure");
   });
 
-  it('should give an error when there are no test definitions ', () => {
+  it("should give an error when there are no test definitions ", () => {
     const trx = `
       <TestRun id="2c9c0c7a-9a0b-4a9d-9ba1-0d8a2d0c9f4e" name="test" runUser="DESKTOP-1" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
         <Times creation="2023-06-21T10:49:20.1894813+01:00" queuing="2023-06-21T10:49:20.1894813+01:00" start="2023-06-21T10:48:54.0738344+01:00" finish="2023-06-21T12:23:10.5068209+01:00" />
@@ -242,10 +248,10 @@ describe('TrxParser', () => {
     `;
 
     const parser = new TrxParser();
-    expect(() => parser.parse(trx)).toThrowError('Invalid file structure');
+    expect(() => parser.parse(trx, new Date())).toThrowError("Invalid file structure");
   });
 
-  it('should give an error when there is no result summary ', () => {
+  it("should give an error when there is no result summary ", () => {
     const trx = `
       <TestRun id="2c9c0c7a-9a0b-4a9d-9ba1-0d8a2d0c9f4e" name="test" runUser="DESKTOP-1" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
         <Times creation="2023-06-21T10:49:20.1894813+01:00" queuing="2023-06-21T10:49:20.1894813+01:00" start="2023-06-21T10:48:54.0738344+01:00" finish="2023-06-21T12:23:10.5068209+01:00" />
@@ -270,10 +276,10 @@ describe('TrxParser', () => {
     `;
 
     const parser = new TrxParser();
-    expect(() => parser.parse(trx)).toThrowError('Invalid file structure');
+    expect(() => parser.parse(trx, new Date())).toThrowError("Invalid file structure");
   });
 
-  it('should give an error when there are no counters ', () => {
+  it("should give an error when there are no counters ", () => {
     const trx = `
       <TestRun id="2c9c0c7a-9a0b-4a9d-9ba1-0d8a2d0c9f4e" name="test" runUser="DESKTOP-1" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
         <Times creation="2023-06-21T10:49:20.1894813+01:00" queuing="2023-06-21T10:49:20.1894813+01:00" start="2023-06-21T10:48:54.0738344+01:00" finish="2023-06-21T12:23:10.5068209+01:00" />
@@ -307,10 +313,10 @@ describe('TrxParser', () => {
     `;
 
     const parser = new TrxParser();
-    expect(() => parser.parse(trx)).toThrowError('Invalid file structure');
+    expect(() => parser.parse(trx, new Date())).toThrowError("Invalid file structure");
   });
 
-  it('should throw an error when the test is not defined', () => {
+  it("should throw an error when the test is not defined", () => {
     const trx = `
       <TestRun id="2c9c0c7a-9a0b-4a9d-9ba1-0d8a2d0c9f4e" name="test" runUser="DESKTOP-1" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
         <Times creation="2023-06-21T10:49:20.1894813+01:00" queuing="2023-06-21T10:49:20.1894813+01:00" start="2023-06-21T10:48:54.0738344+01:00" finish="2023-06-21T12:23:10.5068209+01:00" />
@@ -345,10 +351,10 @@ describe('TrxParser', () => {
     `;
 
     const parser = new TrxParser();
-    expect(() => parser.parse(trx)).toThrowError('The test is not defined');
+    expect(() => parser.parse(trx, new Date())).toThrowError("The test is not defined");
   });
 
-  it('should throw an error when times is not defined', () => {
+  it("should throw an error when times is not defined", () => {
     const trx = `
       <TestRun id="2c9c0c7a-9a0b-4a9d-9ba1-0d8a2d0c9f4e" name="test" runUser="DESKTOP-1" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
         <Results>
@@ -382,10 +388,12 @@ describe('TrxParser', () => {
     `;
 
     const parser = new TrxParser();
-    expect(() => parser.parse(trx)).toThrowError('Invalid file structure');
+    expect(() => parser.parse(trx, new Date())).toThrowError("Invalid file structure");
   });
 
-  it('should trim the values of the fields', () => {
+  it("should trim the values of the fields", () => {
+    const createdAt = new Date();
+
     const trx = `
       <TestRun id="2c9c0c7a-9a0b-4a9d-9ba1-0d8a2d0c9f4e" name="  test   " runUser="DESKTOP-1" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
         <Times creation="2023-06-21T10:49:20.1894813+01:00" queuing="2023-06-21T10:49:20.1894813+01:00" start="2023-06-21T10:48:54.0738344+01:00" finish="2023-06-21T12:23:10.5068209+01:00" />
@@ -415,7 +423,7 @@ describe('TrxParser', () => {
     `;
 
     const parser = new TrxParser();
-    const result = parser.parse(trx);
+    const result = parser.parse(trx, createdAt);
 
     const exptected = {
       counters: {
@@ -436,6 +444,7 @@ describe('TrxParser', () => {
         total: 469,
         warning: 0,
       },
+      createdAt,
       testResults: [
         {
           className: "Sample.ClassName",
@@ -447,7 +456,8 @@ describe('TrxParser', () => {
           outcome: "Passed",
           startTime: "2023-06-21T11:31:20.9626294+01:00",
           testType: "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-        }],
+        },
+      ],
       times: {
         creation: "2023-06-21T10:49:20.1894813+01:00",
         duration: "01:34:16",
@@ -458,7 +468,4 @@ describe('TrxParser', () => {
 
     expect(result).toEqual(exptected);
   });
-
-
 });
-

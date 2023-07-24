@@ -1,5 +1,14 @@
-@import 'styles/variables.scss';
+@import "styles/variables.scss";
 
 thead > tr > th {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+table > tbody > tr > th {
+  max-width: 25rem;
+}
+
+table > tbody > tr td:first-child {
+  background-color: red;
+  max-width: 10rem;
 }

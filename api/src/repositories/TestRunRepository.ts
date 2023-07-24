@@ -1,4 +1,5 @@
-import { TestRun } from '../models/TestRun';
+import { TestResult } from "../models/TestResult";
+import { TestRun } from "../models/TestRun";
 
 export class TestRunRepository {
   private testRuns: TestRun[];
@@ -12,9 +13,32 @@ export class TestRunRepository {
   }
 
   findWithClass(id: string, className: string): TestRun[] | undefined {
-    if (!this.testRuns[id])
+    if (!this.testRuns[id]) {
       return undefined;
-    return this.testRuns[id].testResults.filter((result) => result.className === className);
+    }
+    return this.testRuns[id].testResults.filter((result) =>
+      result.className === className
+    );
+  }
+
+  findTestResults(testId: string): TestResult[] | undefined {
+    const testResults = [];
+
+    for (const testRun of this.testRuns) {
+      const testResult = testRun.testResults.find(
+        (result) => result.id === testId,
+      );
+
+      if (testResult) {
+        testResults.push(testResult);
+      }
+    }
+
+    if (testResults.length === 0) {
+      return undefined;
+    }
+
+    return testResults;
   }
 
   add(testRun: TestRun): void {
@@ -29,4 +53,3 @@ export class TestRunRepository {
     return this.testRuns[runId];
   }
 }
-

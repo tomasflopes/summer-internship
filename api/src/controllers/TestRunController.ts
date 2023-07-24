@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 
-import { TrxParser } from '../services/TrxParser';
+import { TrxParser } from "../services/TrxParser";
 import { TestRunRepository } from "../repositories/TestRunRepository";
-import { TestRun } from "../models/TestRun";
 
 export class TestRunController {
   constructor(private repo: TestRunRepository) { }
@@ -15,14 +14,16 @@ export class TestRunController {
     const { id } = request.params;
     const { className } = request.query;
 
-    if (!this.repo.findWithId(id))
-      return response.status(404).json({ error: 'Test run not found' });
+    if (!this.repo.findWithId(id)) {
+      return response.status(404).json({ error: "Test run not found" });
+    }
 
     if (className) {
-      if (!this.repo.findWithClass(id, className))
-        return response.status(404).json({ error: 'Test class not found' });
-      else
+      if (!this.repo.findWithClass(id, className)) {
+        return response.status(404).json({ error: "Test class not found" });
+      } else {
         return response.json(this.repo.findWithClass(id, className));
+      }
     }
 
     return response.json(this.repo.findWithId(id));
@@ -43,4 +44,3 @@ export class TestRunController {
     }
   }
 }
-

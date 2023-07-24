@@ -1,14 +1,7 @@
+import { TestResult } from "./TestResult";
+
 export interface TestRun {
-  testResults: {
-    id: string;
-    name: string;
-    outcome: string;
-    duration: Date;
-    startTime: Date;
-    endTime: Date;
-    description: string;
-    className: string;
-  };
+  testResults: TestResult[];
   times: {
     creation: Date;
     start: Date;

@@ -2,7 +2,7 @@ import { XMLParser } from "fast-xml-parser";
 import { TestRun } from "../models/TestRun";
 
 export class TrxParser {
-  parse(xml: string): TestRun {
+  parse(xml: string, createdAt: Date): TestRun {
     const options = {
       attributeNamePrefix: "@",
       ignoreAttributes: false,
@@ -89,7 +89,7 @@ export class TrxParser {
           content.TestRun.Times["@finish"],
         ),
       },
-      createdAt: new Date(),
+      createdAt,
     };
   }
 

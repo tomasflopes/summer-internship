@@ -22,6 +22,11 @@ const routes: Routes = [
       import('modules/tables/tables-routing.module').then(m => m.TablesRoutingModule),
   },
   {
+    path: 'tests/:id',
+    loadChildren: () =>
+      import('modules/tests/tests-routing.module').then(m => m.TestsRoutingModule),
+  },
+  {
     path: 'charts',
     loadChildren: () =>
       import('modules/charts/charts-routing.module').then(m => m.ChartsRoutingModule),

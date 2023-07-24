@@ -17,7 +17,7 @@ export class DashboardService {
 
   private fetchDashboardData(): Observable<TestRun[]> {
     return this.http
-      .get(`${configs.apiUrl}/tests`)
+      .get(`${configs.apiUrl}/runs`)
       .pipe(
         map((data: any) => {
           const arr: TestRun[] = [];

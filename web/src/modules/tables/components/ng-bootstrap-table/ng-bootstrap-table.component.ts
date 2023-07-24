@@ -7,9 +7,9 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
+import { TestResult } from '@common/models';
 import { SBSortableHeaderDirective, SortEvent } from '@modules/tables/directives';
-import { Country } from '@modules/tables/models';
-import { CountryService } from '@modules/tables/services';
+import { TestResultService } from '@modules/tables/services';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 export class NgBootstrapTableComponent implements OnInit {
   @Input() pageSize = 4;
 
-  countries$!: Observable<Country[]>;
+  results$!: Observable<TestResult[]>;
   total$!: Observable<number>;
   sortedColumn!: string;
   sortedDirection!: string;
@@ -29,21 +29,21 @@ export class NgBootstrapTableComponent implements OnInit {
   @ViewChildren(SBSortableHeaderDirective) headers!: QueryList<SBSortableHeaderDirective>;
 
   constructor(
-    public countryService: CountryService,
+    public testResultService: TestResultService,
     private changeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    this.countryService.pageSize = this.pageSize;
-    this.countries$ = this.countryService.countries$;
-    this.total$ = this.countryService.total$;
+    this.testResultService.pageSize = this.pageSize;
+    this.results$ = this.testResultService.results$;
+    this.total$ = this.testResultService.total$;
   }
 
   onSort({ column, direction }: SortEvent) {
     this.sortedColumn = column;
     this.sortedDirection = direction;
-    this.countryService.sortColumn = column;
-    this.countryService.sortDirection = direction;
+    this.testResultService.sortColumn = column;
+    this.testResultService.sortDirection = direction;
     this.changeDetectorRef.detectChanges();
   }
 }

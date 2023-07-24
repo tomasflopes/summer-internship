@@ -3,9 +3,9 @@ import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class TablesService {
-    constructor() {}
+  constructor() { }
 
-    getTables$(): Observable<{}> {
-        return of({});
-    }
+  getTables$(): Observable<{}> {
+    return of({});
+  }
 }

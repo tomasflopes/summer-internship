@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
   selector: 'sb-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['dashboard.component.scss'],
-  providers: [DashboardService]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   constructor(private dashboardService: DashboardService) { }
@@ -15,7 +14,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   nOfTestsLoaded = 0;
 
   ngOnInit() {
-    this.subscription = this.dashboardService.dashboardData.subscribe((d: any) => {
+    this.subscription = this.dashboardService.dashboardData.subscribe(d => {
       this.nOfTestsLoaded = d.length;
     });
   }

@@ -1,13 +1,13 @@
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, LowerCasePipe } from '@angular/common';
 import { Injectable, PipeTransform } from '@angular/core';
-import { COUNTRIES } from '@modules/tables/data/countries';
+import { TestResult } from '@common/models';
+import { DashboardService } from '@modules/dashboard/services/dashboard.service';
 import { SortDirection } from '@modules/tables/directives';
-import { Country } from '@modules/tables/models';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 
 interface SearchResult {
-  countries: Country[];
+  results: TestResult[];
   total: number;
 }
 
@@ -19,45 +19,51 @@ interface State {
   sortDirection: SortDirection;
 }
 
-function compare(v1: number | string, v2: number | string) {
+function compare(v1: string, v2: string) {
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 
-function sort(countries: Country[], column: string, direction: string): Country[] {
+function sort(results: TestResult[], column: string, direction: string): TestResult[] {
   if (direction === '') {
-    return countries;
+    return results;
   } else {
-    return [...countries].sort((a, b) => {
+    return [...results].sort((a, b) => {
       const res = compare(a[column], b[column]);
       return direction === 'asc' ? res : -res;
     });
   }
 }
 
-function matches(country: Country, term: string, pipe: PipeTransform) {
+function matches(result: TestResult, term: string, pipe: PipeTransform) {
   return (
-    country.name.toLowerCase().includes(term.toLowerCase()) ||
-    pipe.transform(country.area).includes(term) ||
-    pipe.transform(country.population).includes(term)
+    result.className.toLowerCase().includes(term.toLowerCase()) ||
+    pipe.transform(result.description).includes(term) ||
+    pipe.transform(result.name).includes(term) ||
+    pipe.transform(result.id).includes(term)
   );
 }
 
 @Injectable({ providedIn: 'root' })
-export class CountryService {
+export class TestResultService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _countries$ = new BehaviorSubject<Country[]>([]);
+  private _testRuns$ = new BehaviorSubject<TestResult[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
+  private lastResults: TestResult[] = [];
 
   private _state: State = {
     page: 1,
-    pageSize: 4,
+    pageSize: 8,
     searchTerm: '',
     sortColumn: '',
     sortDirection: '',
   };
 
-  constructor(private pipe: DecimalPipe) {
+  constructor(private pipe: LowerCasePipe, private dashboardService: DashboardService) {
+    this.dashboardService.dashboardData.subscribe(data => {
+      this.lastResults = data[data.length - 1].testResults;
+    });
+
     this._search$
       .pipe(
         tap(() => this._loading$.next(true)),
@@ -67,15 +73,15 @@ export class CountryService {
         tap(() => this._loading$.next(false))
       )
       .subscribe(result => {
-        this._countries$.next(result.countries);
+        this._testRuns$.next(result.results);
         this._total$.next(result.total);
       });
 
     this._search$.next();
   }
 
-  get countries$() {
-    return this._countries$.asObservable();
+  get results$() {
+    return this._testRuns$.asObservable();
   }
   get total$() {
     return this._total$.asObservable();
@@ -117,14 +123,14 @@ export class CountryService {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
     // 1. sort
-    let countries = sort(COUNTRIES, sortColumn, sortDirection);
+    let results = sort(this.lastResults, sortColumn, sortDirection);
 
     // 2. filter
-    countries = countries.filter(country => matches(country, searchTerm, this.pipe));
-    const total = countries.length;
+    results = results.filter(country => matches(country, searchTerm, this.pipe));
+    const total = results.length;
 
     // 3. paginate
-    countries = countries.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    return of({ countries, total });
+    results = results.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+    return of({ results, total });
   }
 }

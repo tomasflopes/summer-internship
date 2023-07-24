@@ -7,6 +7,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { TestRun } from '@common/models';
 import { DashboardService } from '@modules/dashboard/services/dashboard.service';
 import { Chart, registerables } from 'chart.js';
 import { Subscription } from 'rxjs';
@@ -25,18 +26,22 @@ export class ChartsBarComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   private subscription: Subscription = new Subscription();
-  private runs = [];
+  private runs: {
+    date: string;
+    passed: number;
+    failed: number;
+    skipped: number;
+  }[] = [];
 
   ngOnInit() {
-    this.subscription = this.dashboardService.dashboardData.subscribe((data: any) => {
-      this.runs = data.map((run: any) => ({
+    this.subscription = this.dashboardService.dashboardData.subscribe(data => {
+      this.runs = data.map(run => ({
         date: new Date(run.times.creation).toLocaleString('pt-PT'),
         passed: run.counters.passed,
         failed: run.counters.failed,
         skipped: run.counters.total - run.counters.passed - run.counters.failed,
       }))
     });
-    console.log(this.runs)
   }
 
   ngOnDestroy() {
@@ -49,25 +54,25 @@ export class ChartsBarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.chart = new Chart(this.myBarChart.nativeElement, {
       type: 'bar',
       data: {
-        labels: this.runs.map((run: any) => run.date),
+        labels: this.runs.map(run => run.date),
         datasets: [
           {
             label: 'Passed',
             backgroundColor: 'rgba(0,255,0,1)',
             borderColor: 'rgba(0,255,0,1)',
-            data: this.runs.map((run: any) => run.passed),
+            data: this.runs.map(run => run.passed),
           },
           {
             label: 'Failed',
             backgroundColor: 'rgba(255,0,0,1)',
             borderColor: 'rgba(255,0,0,1)',
-            data: this.runs.map((run: any) => run.failed),
+            data: this.runs.map(run => run.failed),
           },
           {
             label: 'Skipped',
             backgroundColor: 'rgba(255,255,0,1)',
             borderColor: 'rgba(255,255,0,1)',
-            data: this.runs.map((run: any) => run.skipped),
+            data: this.runs.map(run => run.skipped),
           },
         ],
       },

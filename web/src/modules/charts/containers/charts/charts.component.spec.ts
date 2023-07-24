@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ChartsComponent } from './charts.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   template: `
@@ -27,7 +28,7 @@ describe('ChartsComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestHostComponent, ChartsComponent],
-      imports: [NoopAnimationsModule],
+      imports: [NoopAnimationsModule, HttpClientModule],
       providers: [],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

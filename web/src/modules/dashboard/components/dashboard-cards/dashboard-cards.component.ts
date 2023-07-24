@@ -34,7 +34,7 @@ export class DashboardCardsComponent implements OnInit, OnDestroy {
         total: last.counters.total,
         passed: last.counters.passed,
         failed: last.counters.failed,
-        ignored: last.counters.total - last.counters.executed
+        ignored: last.counters.total - last.counters.passed - last.counters.failed,
       }
     });
   }

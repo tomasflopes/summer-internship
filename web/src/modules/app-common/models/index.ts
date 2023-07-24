@@ -1,1 +1,2 @@
-export * from './app-common.model';
+export * from './testrun.model';
+export * from './result.model';

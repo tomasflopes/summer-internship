@@ -1,6 +1,5 @@
-/* tslint:disable: ordered-imports*/
 import { NgModule } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe, LowerCasePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -33,7 +32,7 @@ import * as tablesServices from './services';
     NavigationModule,
   ],
   providers: [
-    DecimalPipe,
+    LowerCasePipe,
     ...tablesServices.services,
     ...tablesGuards.guards,
     ...tablesDirectives.directives,

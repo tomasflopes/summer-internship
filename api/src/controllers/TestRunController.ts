@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import { TrxParser } from '../services/TrxParser';
 import { TestRunRepository } from "../repositories/TestRunRepository";
+import { TestRun } from "../models/TestRun";
 
 export class TestRunController {
   constructor(private repo: TestRunRepository) { }
@@ -34,7 +35,7 @@ export class TestRunController {
       const trxParser = new TrxParser();
       const content = trxParser.parseFile(path);
 
-      this.repo.addAll(content);
+      this.repo.add(content);
       return response.json(content);
     } catch (e) {
       console.log(e);

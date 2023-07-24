@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { TestRun } from '@common/models';
 import { DashboardService } from '@modules/dashboard/services/dashboard.service';
 import { Chart, registerables } from 'chart.js';
 import { Subscription } from 'rxjs';
@@ -23,13 +24,16 @@ export class ChartsAreaComponent implements OnInit, AfterViewInit, OnDestroy {
     private dashboardService: DashboardService
   ) { }
   private subscription: Subscription = new Subscription();
-  private runs = [];
+  private runs: {
+    date: string;
+    nOfTests: number;
+  }[] = [];
 
   ngOnInit() {
-    this.subscription = this.dashboardService.dashboardData.subscribe((data: any) => {
-      this.runs = data.map((run: any) => ({
+    this.subscription = this.dashboardService.dashboardData.subscribe(data => {
+      this.runs = data.map(run => ({
         date: new Date(run.times.creation).toLocaleString('pt-PT'),
-        nOfTests: run.counters.total
+        nOfTests: run.counters.total,
       }))
     });
   }
@@ -44,7 +48,7 @@ export class ChartsAreaComponent implements OnInit, AfterViewInit, OnDestroy {
     this.chart = new Chart(this.myAreaChart.nativeElement, {
       type: 'line',
       data: {
-        labels: this.runs.map((run: any) => run.date),
+        labels: this.runs.map(run => run.date),
         datasets: [
           {
             label: 'No. of tests',
@@ -59,7 +63,7 @@ export class ChartsAreaComponent implements OnInit, AfterViewInit, OnDestroy {
             pointHitRadius: 50,
             pointBorderWidth: 2,
             fill: true,
-            data: this.runs.map((run: any) => run.nOfTests),
+            data: this.runs.map(run => run.nOfTests),
           },
         ],
       },

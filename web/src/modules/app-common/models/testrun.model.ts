@@ -1,20 +1,7 @@
+import { TestResult } from "./result.model";
+
 export interface TestRun {
-  testResults: {
-    id: string;
-    name: string;
-    outcome: string;
-    duration: Date;
-    startTime: Date;
-    endTime: Date;
-    description: string;
-    className: string;
-  };
-  times: {
-    creation: Date;
-    start: Date;
-    finish: Date;
-    duration: string;
-  };
+  testResults: TestResult[],
   counters: {
     total: number;
     executed: number;
@@ -32,6 +19,12 @@ export interface TestRun {
     completed: number;
     inProgress: number;
     pending: number;
-  };
-  createdAt: Date;
-}
+  },
+  times: {
+    creation: string;
+    start: string;
+    finish: string;
+    duration: string;
+  },
+  createdAt: string;
+};

@@ -7,6 +7,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 /* Modules */
 import { AppCommonModule } from '@common/app-common.module';
 import { NavigationModule } from '@modules/navigation/navigation.module';
+import { ChartsModule } from '@modules/charts/charts.module';
 
 /* Components */
 import * as testsComponents from './components';
@@ -16,7 +17,6 @@ import * as testsContainers from './containers';
 
 /* Guards */
 import * as testsGuards from './guards';
-import { DashboardService } from '@modules/dashboard/services/dashboard.service';
 
 @NgModule({
   imports: [
@@ -26,6 +26,7 @@ import { DashboardService } from '@modules/dashboard/services/dashboard.service'
     FormsModule,
     AppCommonModule,
     NavigationModule,
+    ChartsModule
   ],
   providers: [...testsGuards.guards],
   declarations: [...testsContainers.containers, ...testsComponents.components],

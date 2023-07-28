@@ -1,9 +1,10 @@
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, LowerCasePipe } from '@angular/common';
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgBootstrapTableComponent } from './ng-bootstrap-table.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   template: `
@@ -31,8 +32,8 @@ describe('NgBootstrapTableComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestHostComponent, NgBootstrapTableComponent],
-      imports: [NoopAnimationsModule],
-      providers: [DecimalPipe],
+      imports: [NoopAnimationsModule, HttpClientModule],
+      providers: [LowerCasePipe],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

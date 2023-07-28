@@ -21,12 +21,16 @@ export class TestRunRepository {
     );
   }
 
-  findTestResults(testId: string): TestResult[] | undefined {
+  findTestResults(
+    testName: string,
+    className: string,
+  ): TestResult[] | undefined {
     const testResults = [];
 
     for (const testRun of this.testRuns) {
       const testResult = testRun.testResults.find(
-        (result) => result.id === testId,
+        (result: TestResult) =>
+          result.name === testName && result.className === className,
       );
 
       if (testResult) {

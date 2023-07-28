@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { TestRun } from '@common/models';
 import { DashboardService } from '@modules/dashboard/services/dashboard.service';
 import { Subscription } from 'rxjs';
 

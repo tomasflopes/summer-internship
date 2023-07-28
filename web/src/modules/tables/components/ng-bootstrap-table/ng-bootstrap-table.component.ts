@@ -1,3 +1,4 @@
+import { LowerCasePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,7 +15,6 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'sb-ng-bootstrap-table',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './ng-bootstrap-table.component.html',
   styleUrls: ['ng-bootstrap-table.component.scss'],
 })
@@ -45,5 +45,9 @@ export class NgBootstrapTableComponent implements OnInit {
     this.testResultService.sortColumn = column;
     this.testResultService.sortDirection = direction;
     this.changeDetectorRef.detectChanges();
+  }
+
+  navigateToTestPage(test: TestResult) {
+    window.open(`/tests?name=${test.name}&className=${test.className}`, '_blank');
   }
 }

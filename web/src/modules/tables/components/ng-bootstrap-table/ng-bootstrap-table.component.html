@@ -3,7 +3,7 @@
       name="searchTerm" [(ngModel)]="testResultService.searchTerm" />
     <span class="ml-3" *ngIf="testResultService.loading$ | async">Loading...</span>
   </div>
-  <table class="table table-hover table-responsive">
+  <table *ngIf="(results$ | async)?.length > 0" class="table table-hover table-responsive">
     <thead>
       <tr>
         <th scope="col" sbSortable="name" (sort)="onSort($event)"><span>Name</span><sb-sort-icon
@@ -19,15 +19,17 @@
     <tbody>
       <tr *ngFor="let testResult of results$ | async">
         <th scope="row">{{ testResult.outcome === 'Passed' ? '✅' : '❎' }}
-          <ngb-highlight [result]="testResult.name" [term]="testResultService.searchTerm"></ngb-highlight>
+          <a (click)="navigateToTestPage(testResult)">
+            <ngb-highlight [result]="testResult.name" [term]="testResultService.searchTerm"></ngb-highlight>
+          </a>
         </th>
-        <td><ngb-highlight [result]="testResult.className" [term]="testResultService.searchTerm"></ngb-highlight>
+        <td><ngb-highlight [result]="testResult.className" [term]="testResultService.searchTerm"></ngb-highlight></td>
+        <td><ngb-highlight [result]="testResult.description" [term]="testResultService.searchTerm"></ngb-highlight>
         </td>
-        <td><ngb-highlight [result]="testResult.description" [term]="testResultService.searchTerm"></ngb-highlight></td>
       </tr>
     </tbody>
   </table>
-  <div class="d-flex justify-content-center p-2">
+  <div *ngIf="(results$ | async)?.length > 0" class=" d-flex justify-content-center p-2">
     <ngb-pagination [collectionSize]="total$ | async" [(page)]="testResultService.page"
       [pageSize]="testResultService.pageSize" [boundaryLinks]="true" [maxSize]="10">
     </ngb-pagination>
@@ -36,5 +38,9 @@
       <option [ngValue]="10">10 items per page</option>
       <option [ngValue]="20">20 items per page</option>
     </select>
+  </div>
+
+  <div *ngIf="(results$ | async)?.length === 0" class="d-flex justify-content-center p-2">
+    <h4>No results found.</h4>
   </div>
 </form>

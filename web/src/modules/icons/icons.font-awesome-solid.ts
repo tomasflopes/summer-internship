@@ -1,12 +1,14 @@
 /* All free solid fontawesome icons -> https://fontawesome.com/icons?d=gallery&s=solid&m=free */
 
 import {
+  IconDefinition,
   faAngleDown,
   faAngleRight,
   faArrowLeft,
   faBars,
   faBookOpen,
   faChartArea,
+
   faChartBar,
   faChartPie,
   faChevronDown,
@@ -16,9 +18,12 @@ import {
   faTable,
   faTachometerAlt,
   faUser,
+  faArrowsRotate
 } from '@fortawesome/free-solid-svg-icons';
 
-export const fontAwesomeSolidIcons = {
+export const fontAwesomeSolidIcons: {
+  [key: string]: any;
+} = {
   faAngleDown,
   faAngleRight,
   faArrowLeft,
@@ -34,4 +39,5 @@ export const fontAwesomeSolidIcons = {
   faTable,
   faTachometerAlt,
   faUser,
+  faArrowsRotate
 };

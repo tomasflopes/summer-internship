@@ -32,7 +32,7 @@ routes.post(
 );
 
 routes.get(
-  "/tests/:id",
+  "/tests",
   (request, response) => testController.show(request, response),
 );
 

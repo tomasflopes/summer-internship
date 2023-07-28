@@ -1,6 +1,6 @@
 import { DecimalPipe, LowerCasePipe } from '@angular/common';
 import { Injectable, PipeTransform } from '@angular/core';
-import { TestResult } from '@common/models';
+import { TestResult, TestRun } from '@common/models';
 import { DashboardService } from '@modules/dashboard/services/dashboard.service';
 import { SortDirection } from '@modules/tables/directives';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';

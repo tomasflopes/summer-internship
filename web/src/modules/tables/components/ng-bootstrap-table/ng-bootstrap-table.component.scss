@@ -1,14 +1,22 @@
 @import "styles/variables.scss";
 
-thead > tr > th {
+
+thead > tr th {
   cursor: pointer;
-}
-
-table > tbody > tr > th {
   max-width: 25rem;
+  width: 30%;
 }
 
-table > tbody > tr td:first-child {
-  background-color: red;
-  max-width: 10rem;
+table > tbody {
+  overflow-wrap: anywhere;
+}
+
+table > tbody > tr > th > a {
+  color: black;
+}
+
+table > tbody > tr > th > a:hover {
+  color: #0056b3;
+  text-decoration: none;
+  cursor: pointer;
 }

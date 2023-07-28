@@ -22,7 +22,7 @@ const routes: Routes = [
       import('modules/tables/tables-routing.module').then(m => m.TablesRoutingModule),
   },
   {
-    path: 'tests/:id',
+    path: 'tests',
     loadChildren: () =>
       import('modules/tests/tests-routing.module').then(m => m.TestsRoutingModule),
   },

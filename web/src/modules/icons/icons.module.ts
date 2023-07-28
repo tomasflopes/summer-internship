@@ -11,10 +11,14 @@ import { fontAwesomeBrandsIcons } from './icons.font-awesome-brands';
 })
 export class IconsModule {
   constructor(library: FaIconLibrary) {
-    library.addIconPacks(
-      fontAwesomeSolidIcons,
-      fontAwesomeRegularIcons,
-      fontAwesomeBrandsIcons
+    const solidIcons = Object.keys(fontAwesomeSolidIcons).map(key => fontAwesomeSolidIcons[key]);
+    const regularIcons = Object.keys(fontAwesomeRegularIcons).map(key => fontAwesomeRegularIcons[key]);
+    const brandIcons = Object.keys(fontAwesomeBrandsIcons).map(key => fontAwesomeBrandsIcons[key]);
+
+    library.addIcons(
+      ...solidIcons,
+      ...regularIcons,
+      ...brandIcons
     );
   }
 }

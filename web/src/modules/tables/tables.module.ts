@@ -30,9 +30,9 @@ import * as tablesServices from './services';
     FormsModule,
     AppCommonModule,
     NavigationModule,
+    LowerCasePipe,
   ],
   providers: [
-    LowerCasePipe,
     ...tablesServices.services,
     ...tablesGuards.guards,
     ...tablesDirectives.directives,

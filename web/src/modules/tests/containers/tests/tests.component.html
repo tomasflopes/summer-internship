@@ -1,4 +1,28 @@
-<sb-layout-dashboard><sb-dashboard-head title="Test Results" [hideBreadcrumbs]="false"></sb-dashboard-head><sb-card>
-    <div class="card-header">{{ id }}</div>
-  </sb-card>
+<sb-layout-dashboard><sb-dashboard-head title="Test Results" [hideBreadcrumbs]="false"></sb-dashboard-head>
+  <div *ngIf="results" class="my-6">
+    <sb-card>
+      <div class="card-header">{{ results[0].name }}</div>
+    </sb-card>
+    <sb-card>
+      <div class="card-header">Results</div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Test</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let result of results">
+              <td>{{ result.name }}</td>
+              <td>{{ result.result }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </sb-card>
+
+    <charts-duration [testName]="results[0].name" [className]="results[0].className"></charts-duration>
+  </div>
 </sb-layout-dashboard>

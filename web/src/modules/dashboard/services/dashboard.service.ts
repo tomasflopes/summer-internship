@@ -25,6 +25,7 @@ export class DashboardService {
             arr.push({ ...element });
           });
           return arr;
-        }));
+        }))
+      .pipe(shareReplay(1));
   }
 }

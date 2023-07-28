@@ -1,22 +1,28 @@
-<sb-layout-dashboard><sb-dashboard-head title="Charts" [hideBreadcrumbs]="false"></sb-dashboard-head><sb-card>
-    <div class="card-header"><fa-icon class="mr-1" [icon]='["fas", "chart-area"]'></fa-icon>No. of tests</div>
-    <div class="card-body"><sb-charts-area></sb-charts-area></div>
-    <div class="card-footer small text-muted">Updated at {{ lastRunCreatedAt }}</div>
-  </sb-card>
-  <div class="row">
-    <div class="col-lg-6">
-      <sb-card>
-        <div class="card-header"><fa-icon class="mr-1" [icon]='["fas", "chart-bar"]'></fa-icon>Bar Chart Example</div>
-        <div class="card-body"><sb-charts-bar></sb-charts-bar></div>
-        <div class="card-footer small text-muted">Updated at {{ lastRunCreatedAt }}</div>
-      </sb-card>
-    </div>
-    <div class="col-lg-6">
-      <sb-card>
-        <div class="card-header"><fa-icon class="mr-1" [icon]='["fas", "chart-pie"]'></fa-icon>Pie Chart Example</div>
-        <div class="card-body"><sb-charts-pie></sb-charts-pie></div>
-        <div class="card-footer small text-muted">Updated at {{ lastRunCreatedAt }}</div>
-      </sb-card>
+<sb-layout-dashboard><sb-dashboard-head title="Charts" [hideBreadcrumbs]="false"></sb-dashboard-head>
+  <div *ngIf="lastRunCreatedAt !== ''">
+    <sb-card>
+      <div class="card-header"><fa-icon class="mr-1" [icon]='["fas", "chart-area"]'></fa-icon>No. of tests</div>
+      <div class="card-body"><sb-charts-area></sb-charts-area></div>
+      <div class="card-footer small text-muted">Updated at {{ lastRunCreatedAt }}</div>
+    </sb-card>
+    <div class="row">
+      <div class="col-lg-6">
+        <sb-card>
+          <div class="card-header"><fa-icon class="mr-1" [icon]='["fas", "chart-bar"]'></fa-icon>Test Results
+          </div>
+          <div class="card-body"><sb-charts-bar></sb-charts-bar></div>
+          <div class="card-footer small text-muted">Updated at {{ lastRunCreatedAt }}</div>
+        </sb-card>
+      </div>
+      <div class="col-lg-6">
+        <sb-card>
+          <div class="card-header"><fa-icon class="mr-1" [icon]='["fas", "chart-pie"]'></fa-icon>Test Results
+          </div>
+          <div class="card-body"><sb-charts-pie></sb-charts-pie></div>
+          <div class="card-footer small text-muted">Updated at {{ lastRunCreatedAt }}</div>
+        </sb-card>
+      </div>
     </div>
   </div>
+  <h3 *ngIf="lastRunCreatedAt === ''">No tests loaded.</h3>
 </sb-layout-dashboard>

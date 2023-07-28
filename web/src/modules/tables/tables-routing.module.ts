@@ -18,14 +18,14 @@ export const ROUTES: Routes = [
     canActivate: [],
     component: tablesContainers.TablesComponent,
     data: {
-      title: 'Tables',
+      title: 'Tests',
       breadcrumbs: [
         {
           text: 'Dashboard',
           link: '/dashboard',
         },
         {
-          text: 'Tables',
+          text: 'Tests',
           active: true,
         },
       ],

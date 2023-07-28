@@ -9,20 +9,30 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>Test</th>
+              <th>Date</th>
               <th>Result</th>
+              <th>Duration (s)</th>
+              <th>Comparison</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let result of results">
-              <td>{{ result.name }}</td>
-              <td>{{ result.result }}</td>
+            <tr *ngFor="let result of results; index as i">
+              <td>{{ result.startTime }}</td>
+              <td>{{ result.status }}</td>
+              <td>{{ result.duration }} </td>
+              <td>
+                <span [ngStyle]="{color: differences[i].color}">
+                  {{this.differences[i].percentage > 0 ? '+' : ''}}{{this.differences[i].percentage}}%
+                  ({{this.differences[i].difference}}s)
+                  {{this.differences[i].icon}}
+                </span>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
     </sb-card>
 
-    <charts-duration [testName]="results[0].name" [className]="results[0].className"></charts-duration>
+    <charts-duration [durations]="durations"></charts-duration>
   </div>
 </sb-layout-dashboard>

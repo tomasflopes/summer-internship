@@ -24,7 +24,7 @@ export const sideNavItems: SideNavItems = {
   },
   tables: {
     icon: 'table',
-    text: 'Tables',
+    text: 'Tests',
     link: '/tables',
   },
 };

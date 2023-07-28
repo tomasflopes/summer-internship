@@ -48,6 +48,6 @@ export class NgBootstrapTableComponent implements OnInit {
   }
 
   navigateToTestPage(test: TestResult) {
-    window.open(`/tests?name=${test.name}&className=${test.className}`, '_blank');
+    window.open(`/tests?name=${test.name}&className=${test.className}`, '_self');
   }
 }

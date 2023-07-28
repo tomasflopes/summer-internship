@@ -7,7 +7,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { TestRun } from '@common/models';
 import { DashboardService } from '@modules/dashboard/services/dashboard.service';
 import { Chart, registerables } from 'chart.js';
 import { Subscription } from 'rxjs';
@@ -58,20 +57,20 @@ export class ChartsBarComponent implements OnInit, AfterViewInit, OnDestroy {
         datasets: [
           {
             label: 'Passed',
-            backgroundColor: 'rgba(0,255,0,1)',
-            borderColor: 'rgba(0,255,0,1)',
+            backgroundColor: '#1cc88a',
+            borderColor: '#1db954',
             data: this.runs.map(run => run.passed),
           },
           {
             label: 'Failed',
-            backgroundColor: 'rgba(255,0,0,1)',
-            borderColor: 'rgba(255,0,0,1)',
+            backgroundColor: '#e74a3b',
+            borderColor: '#e83e8c',
             data: this.runs.map(run => run.failed),
           },
           {
             label: 'Skipped',
-            backgroundColor: 'rgba(255,255,0,1)',
-            borderColor: 'rgba(255,255,0,1)',
+            backgroundColor: '#f6c23e',
+            borderColor: '#f0ad4e',
             data: this.runs.map(run => run.skipped),
           },
         ],

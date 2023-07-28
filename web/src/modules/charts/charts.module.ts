@@ -16,7 +16,6 @@ import * as chartsContainers from './containers';
 
 /* Guards */
 import * as chartsGuards from './guards';
-import { DashboardService } from '@modules/dashboard/services/dashboard.service';
 
 @NgModule({
   imports: [

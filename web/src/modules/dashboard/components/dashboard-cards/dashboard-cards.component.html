@@ -2,7 +2,7 @@
 <h2 *ngIf="nOfTestRuns === 0" class="mb-4">No loaded test runs.</h2>
 <div *ngIf="nOfTestRuns > 0" class="row">
   <div class="col-xl-3 col-md-6">
-    <sb-card-view-details link="/dashboard" background="bg-primary">
+    <sb-card-view-details link="/tables" background="bg-primary">
       <div class="card-body">
         <h5 class="h5">Total Tests</h5>
         <p class="h3 font-weight-light mb-0">{{ lastRun.total }}</p>
@@ -10,7 +10,7 @@
     </sb-card-view-details>
   </div>
   <div class="col-xl-3 col-md-6">
-    <sb-card-view-details link="/dashboard" background="bg-warning">
+    <sb-card-view-details link="/tables" background="bg-warning">
       <div class="card-body">
         <h5 class="h5">Ignored tests</h5>
         <p class="h3 font-weight-light mb-0">{{ lastRun.ignored }}</p>
@@ -18,7 +18,7 @@
     </sb-card-view-details>
   </div>
   <div class="col-xl-3 col-md-6">
-    <sb-card-view-details link="/dashboard" background="bg-success">
+    <sb-card-view-details link="/tables" background="bg-success">
       <div class="card-body">
         <h5 class="h5">Passed</h5>
         <p class="h3 font-weight-light mb-0">{{ lastRun.passed }}</p>
@@ -26,7 +26,7 @@
     </sb-card-view-details>
   </div>
   <div class="col-xl-3 col-md-6">
-    <sb-card-view-details link="/dashboard" background="bg-danger">
+    <sb-card-view-details link="/tables" background="bg-danger">
       <div class="card-body">
         <h5 class="h5">Failed</h5>
         <p class="h3 font-weight-light mb-0">{{ lastRun.failed }}</p>

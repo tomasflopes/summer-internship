@@ -8,6 +8,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { TestDuration } from '@modules/tests/models/duration.model';
 
 import { Chart, registerables } from 'chart.js';
 import { configs } from 'configs';
@@ -17,33 +18,13 @@ import { configs } from 'configs';
   templateUrl: './charts-duration.component.html',
   styleUrls: ['charts-duration.component.scss'],
 })
-export class ChartsDurationComponent implements OnInit, AfterViewInit {
+export class ChartsDurationComponent implements AfterViewInit {
   @ViewChild('myDurationChart') myDurationChart!: ElementRef<HTMLCanvasElement>;
   chart!: Chart;
 
-  @Input() private testName: string = "";
-  @Input() private className: string = "";
+  @Input() private durations: TestDuration[] = [];
 
-  constructor(private http: HttpClient) { }
-
-  private durations: {
-    date: string;
-    duration: number;
-  }[] = [];
-
-  ngOnInit() {
-    this.http
-      .get(`${configs.apiUrl}/tests?name=${this.testName}&className=${this.className}`)
-      .subscribe((data: any) => {
-        this.durations = data.map((test: any) => {
-          return {
-            date: new Date(test.startTime).toLocaleString('pt-PT'),
-            duration: parseFloat(test.duration.split(':')[2])
-          };
-        });
-        console.log(this.durations)
-      });
-  }
+  constructor() { }
 
   ngAfterViewInit() {
     Chart.register(...registerables);
@@ -54,7 +35,7 @@ export class ChartsDurationComponent implements OnInit, AfterViewInit {
         labels: this.durations.map(duration => duration.date),
         datasets: [
           {
-            label: 'Duration',
+            label: 'Duration (seconds)',
             tension: 0.3,
             backgroundColor: 'rgba(2,117,216,0.2)',
             borderColor: 'rgba(2,117,216,1)',
@@ -78,6 +59,7 @@ export class ChartsDurationComponent implements OnInit, AfterViewInit {
             },
           },
           y: {
+            min: 0,
             ticks: {
               maxTicksLimit: 5,
             },

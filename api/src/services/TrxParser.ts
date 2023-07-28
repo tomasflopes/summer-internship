@@ -118,6 +118,6 @@ export class TrxParser {
       throw new Error("File not found");
     }
 
-    return this.parse(xml);
+    return this.parse(xml, new Date());
   }
 }

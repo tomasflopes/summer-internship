@@ -82,6 +82,10 @@ describe("TrxParser", () => {
           outcome: "Passed",
           startTime: "2023-06-21T11:31:20.9626294+01:00",
           testType: "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+          output: `Daemon Logs:
+                2023-06-21T11:31:30,257+0100 WEST [140648228183168] INFO  PERSO.Configuration - Log configurations loaded from: ./Resources/log4cpp.properties
+                2023-06-21T11:31:30,258+0100 WEST [140648228183168] INFO  PERSO.Configuration - Instance Name is set to: TestDaemon_A017
+                2023-06-21T11:31:30,380+0100 WEST [140648228183168] FATAL PERSO.Main - Daemon exiting.`,
         },
         {
           className: "Sample.ClassName",
@@ -93,6 +97,9 @@ describe("TrxParser", () => {
           outcome: "Passed",
           startTime: "2023-06-21T11:03:33.5080335+01:00",
           testType: "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+          output: `Daemon Logs:
+                2023-06-21T11:03:34,947+0100 WEST [140266646064256] INFO  PERSO.Configuration - Log configurations loaded from: ./Resources/log4cpp.properties
+                2023-06-21T11:03:34,947+0100 WEST [140266646064256] INFO  PERSO.Configuration - Instance Name is set to: testdaemon470300`,
         },
       ],
       times: {
@@ -176,6 +183,10 @@ describe("TrxParser", () => {
           outcome: "Passed",
           startTime: "2023-06-21T11:31:20.9626294+01:00",
           testType: "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+          output: `Daemon Logs:
+                2023-06-21T11:31:30,257+0100 WEST [140648228183168] INFO  PERSO.Configuration - Log configurations loaded from: ./Resources/log4cpp.properties
+                2023-06-21T11:31:30,258+0100 WEST [140648228183168] INFO  PERSO.Configuration - Instance Name is set to: TestDaemon_A017
+                2023-06-21T11:31:30,380+0100 WEST [140648228183168] FATAL PERSO.Main - Daemon exiting.`,
         },
       ],
       times: {
@@ -217,7 +228,9 @@ describe("TrxParser", () => {
     `;
 
     const parser = new TrxParser();
-    expect(() => parser.parse(trx, new Date())).toThrowError("Invalid file structure");
+    expect(() => parser.parse(trx, new Date())).toThrowError(
+      "Invalid file structure",
+    );
   });
 
   it("should give an error when there are no test definitions ", () => {
@@ -248,7 +261,9 @@ describe("TrxParser", () => {
     `;
 
     const parser = new TrxParser();
-    expect(() => parser.parse(trx, new Date())).toThrowError("Invalid file structure");
+    expect(() => parser.parse(trx, new Date())).toThrowError(
+      "Invalid file structure",
+    );
   });
 
   it("should give an error when there is no result summary ", () => {
@@ -276,7 +291,9 @@ describe("TrxParser", () => {
     `;
 
     const parser = new TrxParser();
-    expect(() => parser.parse(trx, new Date())).toThrowError("Invalid file structure");
+    expect(() => parser.parse(trx, new Date())).toThrowError(
+      "Invalid file structure",
+    );
   });
 
   it("should give an error when there are no counters ", () => {
@@ -313,7 +330,9 @@ describe("TrxParser", () => {
     `;
 
     const parser = new TrxParser();
-    expect(() => parser.parse(trx, new Date())).toThrowError("Invalid file structure");
+    expect(() => parser.parse(trx, new Date())).toThrowError(
+      "Invalid file structure",
+    );
   });
 
   it("should throw an error when the test is not defined", () => {
@@ -351,7 +370,9 @@ describe("TrxParser", () => {
     `;
 
     const parser = new TrxParser();
-    expect(() => parser.parse(trx, new Date())).toThrowError("The test is not defined");
+    expect(() => parser.parse(trx, new Date())).toThrowError(
+      "The test is not defined",
+    );
   });
 
   it("should throw an error when times is not defined", () => {
@@ -388,7 +409,9 @@ describe("TrxParser", () => {
     `;
 
     const parser = new TrxParser();
-    expect(() => parser.parse(trx, new Date())).toThrowError("Invalid file structure");
+    expect(() => parser.parse(trx, new Date())).toThrowError(
+      "Invalid file structure",
+    );
   });
 
   it("should trim the values of the fields", () => {
@@ -405,6 +428,82 @@ describe("TrxParser", () => {
                 2023-06-21T11:31:30,258+0100 WEST [140648228183168] INFO  PERSO.Configuration - Instance Name is set to: TestDaemon_A017
                 2023-06-21T11:31:30,380+0100 WEST [140648228183168] FATAL PERSO.Main - Daemon exiting.</StdOut>
             </Output>
+          </UnitTestResult>
+        </Results>
+        <TestDefinitions>
+          <UnitTest name=" T02_Test2" storage="sampleStorage" id="321 ">
+            <Execution id="ad882f0b-055d-4b8a-9df9-7c7f8810a878" />
+            <TestMethod codeBase="sampleCodeBase" adapterTypeName="sampleAdapter" className="Sample.ClassName" name="T02_Test2" />
+            <Description>Test Description         </Description>
+          </UnitTest>
+        </TestDefinitions>
+        <ResultSummary outcome="Completed">
+          <Counters total="469" executed="465" passed="465" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+          <Output>
+          </Output>
+        </ResultSummary>
+      </TestRun>
+    `;
+
+    const parser = new TrxParser();
+    const result = parser.parse(trx, createdAt);
+
+    const exptected = {
+      counters: {
+        aborted: 0,
+        completed: 0,
+        disconnected: 0,
+        error: 0,
+        executed: 465,
+        failed: 0,
+        inProgress: 0,
+        inconclusive: 0,
+        notExecuted: 0,
+        notRunnable: 0,
+        passed: 465,
+        passedButRunAborted: 0,
+        pending: 0,
+        timeout: 0,
+        total: 469,
+        warning: 0,
+      },
+      createdAt,
+      testResults: [
+        {
+          className: "Sample.ClassName",
+          description: "Test Description",
+          duration: "00:00:11.8375326",
+          endTime: "2023-06-21T11:31:32.8001048+01:00",
+          id: 321,
+          name: "T01_Test",
+          outcome: "Passed",
+          startTime: "2023-06-21T11:31:20.9626294+01:00",
+          testType: "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
+          output: `Daemon Logs:
+                2023-06-21T11:31:30,257+0100 WEST [140648228183168] INFO  PERSO.Configuration - Log configurations loaded from: ./Resources/log4cpp.properties
+                2023-06-21T11:31:30,258+0100 WEST [140648228183168] INFO  PERSO.Configuration - Instance Name is set to: TestDaemon_A017
+                2023-06-21T11:31:30,380+0100 WEST [140648228183168] FATAL PERSO.Main - Daemon exiting.`,
+        },
+      ],
+      times: {
+        creation: "2023-06-21T10:49:20.1894813+01:00",
+        duration: "01:34:16",
+        finish: "2023-06-21T12:23:10.5068209+01:00",
+        start: "2023-06-21T10:48:54.0738344+01:00",
+      },
+    };
+
+    expect(result).toEqual(exptected);
+  });
+
+  it("should support tests without output", () => {
+    const createdAt = new Date();
+
+    const trx = `
+      <TestRun id="2c9c0c7a-9a0b-4a9d-9ba1-0d8a2d0c9f4e" name="  test   " runUser="DESKTOP-1" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+        <Times creation="2023-06-21T10:49:20.1894813+01:00" queuing="2023-06-21T10:49:20.1894813+01:00" start="2023-06-21T10:48:54.0738344+01:00" finish="2023-06-21T12:23:10.5068209+01:00" />
+        <Results>
+          <UnitTestResult executionId="3aa8e763-1298-42ac-9503-bbe3b3cb8787" testId="321" testName="  T01_Test " computerName="SampleComputer" duration="00:00:11.8375326" startTime="2023-06-21T11:31:20.9626294+01:00" endTime="2023-06-21T11:31:32.8001048+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3aa8e763-1298-42ac-9503-bbe3b3cb8787">
           </UnitTestResult>
         </Results>
         <TestDefinitions>

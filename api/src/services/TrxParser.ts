@@ -56,6 +56,7 @@ export class TrxParser {
         testType: testRun["@testType"],
         description: testData["Description"],
         className: testData.TestMethod["@className"],
+        output: testRun.Output?.StdOut,
       };
     });
 

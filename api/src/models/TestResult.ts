@@ -7,4 +7,5 @@ export interface TestResult {
   endTime: Date;
   description: string;
   className: string;
+  output: string | null;
 }

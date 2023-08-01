@@ -52,6 +52,8 @@ export class ChartsDurationComponent implements AfterViewInit {
         ],
       },
       options: {
+        maintainAspectRatio: false,
+        responsive: true,
         scales: {
           x: {
             ticks: {

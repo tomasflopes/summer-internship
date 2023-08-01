@@ -76,6 +76,8 @@ export class ChartsBarComponent implements OnInit, AfterViewInit, OnDestroy {
         ],
       },
       options: {
+        maintainAspectRatio: false,
+        responsive: true,
         scales: {
           x: {
             stacked: true,

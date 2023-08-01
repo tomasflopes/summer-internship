@@ -1,8 +1,14 @@
 <sb-layout-dashboard><sb-dashboard-head title="Test Results" [hideBreadcrumbs]="false"></sb-dashboard-head>
   <div *ngIf="results" class="my-6">
     <sb-card>
-      <div class="card-header">{{ results[0].name }}</div>
+      <div class="card-header">Test Name</div>
+      <div class="card-body">{{ results[0].name }}</div>
     </sb-card>
+    <sb-card>
+      <div class="card-header">Description</div>
+      <div class="card-body">{{ results[0].description }}</div>
+    </sb-card>
+
     <sb-card>
       <div class="card-header">Results</div>
       <div class="card-body">
@@ -21,7 +27,7 @@
               <td>{{ result.status }}</td>
               <td>{{ result.duration }} </td>
               <td>
-                <span [ngStyle]="{color: differences[i].color}">
+                <span [ngStyle]="{color: differences[i].color}" *ngIf="i !== 0">
                   {{this.differences[i].percentage > 0 ? '+' : ''}}{{this.differences[i].percentage}}%
                   ({{this.differences[i].difference}}s)
                   {{this.differences[i].icon}}
@@ -34,5 +40,29 @@
     </sb-card>
 
     <charts-duration [durations]="durations"></charts-duration>
+
+    <sb-card>
+      <div class="card-header">Output</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6">
+            <sb-card>
+              <div class="card-header">Baseline</div>
+              <div class="card-body">
+                <pre>{{ results[0].output }}</pre>
+              </div>
+            </sb-card>
+          </div>
+          <div class="col-6">
+            <sb-card>
+              <div class="card-header">Current</div>
+              <div class="card-body">
+                <pre>{{ results[1].output }}</pre>
+              </div>
+            </sb-card>
+          </div>
+        </div>
+      </div>
+    </sb-card>
   </div>
 </sb-layout-dashboard>

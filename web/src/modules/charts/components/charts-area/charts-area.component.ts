@@ -68,6 +68,8 @@ export class ChartsAreaComponent implements OnInit, AfterViewInit, OnDestroy {
         ],
       },
       options: {
+        maintainAspectRatio: false,
+        responsive: true,
         scales: {
           x: {
             ticks: {

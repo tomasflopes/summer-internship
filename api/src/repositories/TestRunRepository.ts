@@ -45,8 +45,9 @@ export class TestRunRepository {
     return testResults;
   }
 
-  add(testRun: TestRun): void {
+  add(testRun: TestRun): TestRun {
     this.testRuns.push(testRun);
+    return testRun;
   }
 
   addAll(testRuns: TestRun[]): void {
@@ -55,5 +56,9 @@ export class TestRunRepository {
 
   findWithId(runId: string): TestRun | undefined {
     return this.testRuns[runId];
+  }
+
+  size(): number {
+    return this.testRuns.length;
   }
 }

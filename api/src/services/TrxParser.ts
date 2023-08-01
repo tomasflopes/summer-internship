@@ -111,7 +111,7 @@ export class TrxParser {
     return n < 10 ? `0${n}` : n;
   }
 
-  parseFile(filePath: string): TestRun {
+  parseFile(filePath: string): Omit<TestRun, "name"> {
     const fs = require("fs");
     const xml = fs.readFileSync(filePath, "utf8");
 

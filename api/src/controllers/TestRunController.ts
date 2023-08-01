@@ -4,7 +4,7 @@ import { TrxParser } from "../services/TrxParser";
 import { TestRunRepository } from "../repositories/TestRunRepository";
 
 export class TestRunController {
-  constructor(private repo: TestRunRepository) { }
+  constructor(private repo: TestRunRepository) {}
 
   async index(request: Request, response: Response) {
     return response.json(this.repo.findAll());
@@ -36,8 +36,14 @@ export class TestRunController {
       const trxParser = new TrxParser();
       const content = trxParser.parseFile(path);
 
-      this.repo.add(content);
-      return response.json(content);
+      const name = `Test Run ${this.repo.size() + 1}`;
+
+      const testRun = {
+        name,
+        ...content,
+      };
+
+      return response.json(this.repo.add(testRun));
     } catch (e) {
       console.log(e);
       return response.status(400).json({ error: e.message });

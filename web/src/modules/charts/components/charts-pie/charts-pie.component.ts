@@ -48,6 +48,10 @@ export class ChartsPieComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.chart = new Chart(this.myPieChart.nativeElement, {
       type: 'pie',
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+      },
       data: {
         labels: ['Passed', 'Failed', 'Skipped'],
         datasets: [

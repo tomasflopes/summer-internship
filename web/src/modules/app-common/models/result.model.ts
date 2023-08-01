@@ -1,5 +1,5 @@
 export interface TestResult {
-  [key: string]: string;
+  [key: string]: string | undefined;
   id: string;
   name: string;
   outcome: string;
@@ -9,4 +9,5 @@ export interface TestResult {
   testType: string;
   description: string;
   className: string;
+  output?: string;
 }

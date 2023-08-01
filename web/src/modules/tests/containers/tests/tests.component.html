@@ -39,12 +39,14 @@
       </div>
     </sb-card>
 
-    <charts-duration [durations]="durations"></charts-duration>
+    <div class="my-5">
+      <charts-duration [durations]="durations"></charts-duration>
+    </div>
 
     <sb-card>
       <div class="card-header">Output</div>
       <div class="card-body">
-
+        <pre>{{ results[0].output }}</pre>
       </div>
     </sb-card>
   </div>

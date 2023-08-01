@@ -41,6 +41,7 @@ export class TestsComponent implements OnInit {
           endTime: new Date(test.endTime).toLocaleString('pt-PT'),
           testType: test.testType,
           description: test.description,
+          output: test.output,
         }))
       ))
       .subscribe((data: any) => {

@@ -19,7 +19,9 @@ interface State {
   sortDirection: SortDirection;
 }
 
-function compare(v1: string, v2: string) {
+function compare(v1: string | undefined, v2: string | undefined) {
+  if (v1 === undefined || v2 === undefined)
+    return 0;
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 

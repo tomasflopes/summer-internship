@@ -11,7 +11,6 @@ import {
 import { TestDuration } from '@modules/tests/models/duration.model';
 
 import { Chart, registerables } from 'chart.js';
-import { configs } from 'configs';
 
 @Component({
   selector: 'charts-duration',
@@ -32,7 +31,7 @@ export class ChartsDurationComponent implements AfterViewInit {
     this.chart = new Chart(this.myDurationChart.nativeElement, {
       type: 'line',
       data: {
-        labels: this.durations.map(duration => duration.date),
+        labels: this.durations.map(duration => duration.runName),
         datasets: [
           {
             label: 'Duration (seconds)',

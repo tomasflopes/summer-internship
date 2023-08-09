@@ -17,6 +17,9 @@ interface State {
   searchTerm: string;
   sortColumn: string;
   sortDirection: SortDirection;
+  testTypeFilter: string;
+  testStatusFilter: string;
+  outputFilter: string;
 }
 
 function compare(v1: string | undefined, v2: string | undefined) {
@@ -34,6 +37,22 @@ function sort(results: TestResult[], column: string, direction: string): TestRes
       return direction === 'asc' ? res : -res;
     });
   }
+}
+
+const testTypeFilters: {
+  [key: string]: (results: TestResult[]) => TestResult[]
+} = {
+  pow: (results: TestResult[]) => results.filter(result => result.className.includes('POW')),
+  uid: (results: TestResult[]) => results.filter(result => result.className.includes('UID')),
+  stress: (results: TestResult[]) => results.filter(result => result.className.includes('Stress')),
+  all: (results: TestResult[]) => results,
+}
+const testStatusFilters: {
+  [key: string]: (results: TestResult[]) => TestResult[]
+} = {
+  passed: (results: TestResult[]) => results.filter(result => result.outcome === 'Passed'),
+  skipped: (results: TestResult[]) => results.filter(result => result.outcome === 'Skipped'),
+  failed: (results: TestResult[]) => results.filter(result => result.outcome === 'Failed'),
 }
 
 function matches(result: TestResult, term: string, pipe: PipeTransform) {
@@ -59,6 +78,9 @@ export class TestResultService {
     searchTerm: '',
     sortColumn: '',
     sortDirection: '',
+    testTypeFilter: '',
+    testStatusFilter: '',
+    outputFilter: '',
   };
 
   constructor(private pipe: LowerCasePipe, private dashboardService: DashboardService) {
@@ -115,6 +137,15 @@ export class TestResultService {
   set sortDirection(sortDirection: SortDirection) {
     this._set({ sortDirection });
   }
+  set testTypeFilter(testTypeFilter: string) {
+    this._set({ testTypeFilter });
+  }
+  set testStatusFilter(testStatusFilter: string) {
+    this._set({ testStatusFilter });
+  }
+  set outputFilter(outputFilter: string) {
+    this._set({ outputFilter });
+  }
 
   private _set(patch: Partial<State>) {
     Object.assign(this._state, patch);
@@ -122,13 +153,22 @@ export class TestResultService {
   }
 
   private _search(): Observable<SearchResult> {
-    const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
+    const { sortColumn, sortDirection, pageSize, page, searchTerm, testStatusFilter, testTypeFilter } = this._state;
 
     // 1. sort
     let results = sort(this.lastResults, sortColumn, sortDirection);
+    console.log(results);
 
     // 2. filter
-    results = results.filter(country => matches(country, searchTerm, this.pipe));
+    if (testTypeFilters[testTypeFilter] !== undefined)
+      results = testTypeFilters[testTypeFilter](results);
+    if (testStatusFilters[testStatusFilter] !== undefined)
+      results = testStatusFilters[testStatusFilter](results);
+    if (this._state.outputFilter !== '')
+      results = results.filter(result => result.output?.includes(this._state.outputFilter));
+
+    // 2.1. filter keywords
+    results = results.filter(result => matches(result, searchTerm.toLowerCase(), this.pipe));
     const total = results.length;
 
     // 3. paginate

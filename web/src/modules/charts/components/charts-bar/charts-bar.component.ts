@@ -27,6 +27,7 @@ export class ChartsBarComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   private runs: {
     date: string;
+    name: string;
     passed: number;
     failed: number;
     skipped: number;
@@ -36,6 +37,7 @@ export class ChartsBarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription = this.dashboardService.dashboardData.subscribe(data => {
       this.runs = data.map(run => ({
         date: new Date(run.times.creation).toLocaleString('pt-PT'),
+        name: run.name,
         passed: run.counters.passed,
         failed: run.counters.failed,
         skipped: run.counters.total - run.counters.passed - run.counters.failed,
@@ -53,7 +55,7 @@ export class ChartsBarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.chart = new Chart(this.myBarChart.nativeElement, {
       type: 'bar',
       data: {
-        labels: this.runs.map(run => run.date),
+        labels: this.runs.map(run => run.name),
         datasets: [
           {
             label: 'Passed',

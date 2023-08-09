@@ -34,7 +34,10 @@ export class TestRunRepository {
       );
 
       if (testResult) {
-        testResults.push(testResult);
+        testResults.push({
+          runName: testRun.name,
+          ...testResult,
+        });
       }
     }
 

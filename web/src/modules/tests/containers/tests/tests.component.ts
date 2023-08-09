@@ -15,6 +15,7 @@ import { map } from 'rxjs';
 export class TestsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private http: HttpClient) { }
 
+  currentRunIndex: number = 0;
   results: TestResult[] | null = null;
   durations: TestDuration[] | null = null;
   differences: {
@@ -23,6 +24,10 @@ export class TestsComponent implements OnInit {
     color: string;
     icon: string;
   }[] = [];
+
+  handleRunIndexChange(i: number) {
+    this.currentRunIndex = i;
+  }
 
   ngOnInit() {
     const name = this.route.snapshot.queryParamMap.get('name');
@@ -35,18 +40,20 @@ export class TestsComponent implements OnInit {
           id: test.id,
           name: test.name,
           outcome: test.outcome,
-          status: test.outcome === 'Passed' ? '✅' : '❎',
+          status: test.outcome === 'Passed' ? '✅' : test.outcome === 'Failed' ? '❌' : '⏩',
           duration: test.duration.split(':')[2],
           startTime: new Date(test.startTime).toLocaleString('pt-PT'),
           endTime: new Date(test.endTime).toLocaleString('pt-PT'),
           testType: test.testType,
           description: test.description,
           output: test.output,
+          runName: test.runName,
         }))
       ))
       .subscribe((data: any) => {
         this.results = data;
         this.durations = data.map((test: any) => ({
+          runName: test.runName,
           date: test.startTime,
           duration: test.duration,
         }));

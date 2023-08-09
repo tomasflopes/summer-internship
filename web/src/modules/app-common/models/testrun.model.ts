@@ -1,6 +1,7 @@
 import { TestResult } from "./result.model";
 
 export interface TestRun {
+  name: string;
   testResults: TestResult[],
   counters: {
     total: number;

@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'sb-side-nav',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './side-nav.component.html',
   styleUrls: ['side-nav.component.scss'],
 })

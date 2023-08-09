@@ -1,4 +1,6 @@
 <form>
+  <test-filters></test-filters>
+
   <div class="form-group form-inline">Full text search: <input class="form-control col-3 ml-2" type="text"
       name="searchTerm" [(ngModel)]="testResultService.searchTerm" />
     <span class="ml-3" *ngIf="testResultService.loading$ | async">Loading...</span>
@@ -14,17 +16,40 @@
           <span>Description</span><sb-sort-icon *ngIf='sortedColumn === "description"'
             [direction]="sortedDirection"></sb-sort-icon>
         </th>
+        <th>
+          Peek Output
+        </th>
       </tr>
     </thead>
-    <tbody>
-      <tr *ngFor="let testResult of results$ | async">
-        <th scope="row">{{ testResult.outcome === 'Passed' ? '✅' : '❎' }}
+    <tbody *ngFor="let testResult of results$ | async; index as i">
+      <tr>
+        <th scope="row">{{ testResult.outcome === 'Passed' ? '✅' : testResult.outcome === 'Failed' ? '❌' : '⏩' }}
           <a (click)="navigateToTestPage(testResult)">
             <ngb-highlight [result]="testResult.name" [term]="testResultService.searchTerm"></ngb-highlight>
           </a>
         </th>
         <td><ngb-highlight [result]="testResult.className" [term]="testResultService.searchTerm"></ngb-highlight></td>
         <td><ngb-highlight [result]="testResult.description" [term]="testResultService.searchTerm"></ngb-highlight>
+        </td>
+        <td class="filter-toggler-container">
+          <button class="filter-toggler" type="button" (click)="toggleOutput(i)">
+            <span>
+              <fa-icon *ngIf="isOutputOpen(i)" class="filter-icon" [icon]='["fas", "chevron-up"]'></fa-icon>
+              <fa-icon *ngIf="!isOutputOpen(i)" class="filter-icon" [icon]='["fas", "chevron-down"]'></fa-icon>
+            </span>
+          </button>
+        </td>
+      </tr>
+      <!-- toggleOutput -->
+      <tr>
+        <td scope="row" colspan="4" [ngbCollapse]="!isOutputOpen(i)">
+          <div class="card card-body">
+            <pre class="output">
+              <span *ngFor="let line of getLines(testResult.output)">
+                {{ line }}
+              </span>
+            </pre>
+          </div>
         </td>
       </tr>
     </tbody>

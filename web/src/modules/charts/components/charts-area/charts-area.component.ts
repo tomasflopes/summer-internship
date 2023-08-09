@@ -25,6 +25,7 @@ export class ChartsAreaComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
   private subscription: Subscription = new Subscription();
   private runs: {
+    name: string;
     date: string;
     nOfTests: number;
   }[] = [];
@@ -32,6 +33,7 @@ export class ChartsAreaComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.dashboardService.dashboardData.subscribe(data => {
       this.runs = data.map(run => ({
+        name: run.name,
         date: new Date(run.times.creation).toLocaleString('pt-PT'),
         nOfTests: run.counters.total,
       }))
@@ -48,7 +50,7 @@ export class ChartsAreaComponent implements OnInit, AfterViewInit, OnDestroy {
     this.chart = new Chart(this.myAreaChart.nativeElement, {
       type: 'line',
       data: {
-        labels: this.runs.map(run => run.date),
+        labels: this.runs.map(run => run.name),
         datasets: [
           {
             label: 'No. of tests',
@@ -77,6 +79,7 @@ export class ChartsAreaComponent implements OnInit, AfterViewInit, OnDestroy {
             },
           },
           y: {
+            min: 0,
             ticks: {
               maxTicksLimit: 5,
             },

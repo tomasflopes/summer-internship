@@ -2,17 +2,24 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TestRun } from '@common/models';
 import { configs } from 'configs';
-import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
 
 @Injectable(
   { providedIn: 'root' }
 )
 export class DashboardService {
-  dashboardData: Observable<TestRun[]>;
+  private dashboardData$: BehaviorSubject<TestRun[]>;
 
   constructor(private http: HttpClient) {
-    this.dashboardData = this.fetchDashboardData();
+    this.dashboardData$ = new BehaviorSubject<TestRun[]>([]);
+    this.fetchDashboardData().subscribe((data: TestRun[]) => {
+      this.dashboardData$.next(data);
+    });
+  }
+
+  get dashboardData() {
+    return this.dashboardData$.asObservable();
   }
 
   private fetchDashboardData(): Observable<TestRun[]> {
@@ -25,7 +32,18 @@ export class DashboardService {
             arr.push({ ...element });
           });
           return arr;
-        }))
-      .pipe(shareReplay(1));
+        }),
+        switchMap((data: TestRun[]) => {
+          return this.http.get(`${configs.apiUrl}/runs`).pipe(
+            map(() => data)
+          );
+        }),
+      );
+  }
+
+  refresh() {
+    this.fetchDashboardData().subscribe((data: TestRun[]) => {
+      this.dashboardData$.next(data);
+    });
   }
 }

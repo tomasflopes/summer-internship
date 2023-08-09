@@ -24,6 +24,7 @@ export class ChartsPieComponent implements OnInit, AfterViewInit {
 
   private subscription: Subscription = new Subscription();
   private runs: {
+    name: string;
     date: string;
     passed: number;
     failed: number;
@@ -33,6 +34,7 @@ export class ChartsPieComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.subscription = this.dashboardService.dashboardData.subscribe(data => {
       this.runs = data.map(run => ({
+        name: run.name,
         date: new Date(run.times.creation).toLocaleString('pt-PT'),
         passed: run.counters.passed,
         failed: run.counters.failed,

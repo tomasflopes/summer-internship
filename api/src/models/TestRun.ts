@@ -1,7 +1,8 @@
 import { TestResult } from "./TestResult";
 
 export interface TestRun {
-  testResults: TestResult[];
+  name: string;
+  testResults: Omit<TestResult, "runName">[];
   times: {
     creation: Date;
     start: Date;

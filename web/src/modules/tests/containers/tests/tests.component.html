@@ -15,6 +15,7 @@
         <table class="table table-striped">
           <thead>
             <tr>
+              <th>Run</th>
               <th>Date</th>
               <th>Result</th>
               <th>Duration (s)</th>
@@ -23,9 +24,10 @@
           </thead>
           <tbody>
             <tr *ngFor="let result of results; index as i">
+              <td>{{ result.runName }}</td>
               <td>{{ result.startTime }}</td>
               <td>{{ result.status }}</td>
-              <td>{{ result.duration }} </td>
+              <td>{{ result.duration }}</td>
               <td>
                 <span [ngStyle]="{color: differences[i].color}" *ngIf="i !== 0">
                   {{this.differences[i].percentage > 0 ? '+' : ''}}{{this.differences[i].percentage}}%
@@ -39,14 +41,20 @@
       </div>
     </sb-card>
 
-    <div class="my-5">
+    <div class="my-4">
       <charts-duration [durations]="durations"></charts-duration>
     </div>
 
-    <sb-card>
+    <ol *ngIf="results[currentRunIndex].output !== undefined" class="run-selector mb-4">
+      <li [ngClass]="i === 0 ? 'mx-2' : 'mx-4'" *ngFor="let result of results; index as i" [class]>
+        <button (click)="handleRunIndexChange(i)">{{result.runName}}</button>
+      </li>
+    </ol>
+
+    <sb-card *ngIf="results[currentRunIndex].output !== undefined">
       <div class="card-header">Output</div>
       <div class="card-body">
-        <pre>{{ results[0].output }}</pre>
+        <pre>{{ results[currentRunIndex].output }}</pre>
       </div>
     </sb-card>
   </div>

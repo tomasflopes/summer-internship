@@ -9,12 +9,12 @@ import { DashboardService } from '@modules/dashboard/services/dashboard.service'
 export class RefreshButtonComponent {
   constructor(private dashboardService: DashboardService) { }
 
-  loading = false; // TODO: implement this
+  loading = false;
 
   refresh() {
     this.loading = true;
 
-    // this.dashboardService.refresh();
+    this.dashboardService.refresh();
 
     // mock delay
     setTimeout(() => {

@@ -1,5 +1,8 @@
 @import "styles/variables.scss";
 
+form {
+  width: 100%;
+}
 
 thead > tr th {
   cursor: pointer;
@@ -7,8 +10,13 @@ thead > tr th {
   width: 30%;
 }
 
+table {
+  width: 100%;
+}
+
 table > tbody {
   overflow-wrap: anywhere;
+  width: 100%;
 }
 
 table > tbody > tr > th > a {
@@ -19,4 +27,31 @@ table > tbody > tr > th > a:hover {
   color: #0056b3;
   text-decoration: none;
   cursor: pointer;
+}
+
+.output {
+  width: 100%;
+  counter-reset: line;
+
+  white-space: pre-line;
+}
+
+.output span {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  line-height: 1.2rem;
+}
+
+.filter-toggler-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-toggler {
+  border: 0;
+  padding: 0.25rem 0.5rem;
+  background: transparent;
 }

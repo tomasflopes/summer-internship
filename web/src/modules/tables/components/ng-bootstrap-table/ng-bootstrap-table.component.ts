@@ -1,6 +1,5 @@
 import { LowerCasePipe } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
@@ -25,6 +24,7 @@ export class NgBootstrapTableComponent implements OnInit {
   total$!: Observable<number>;
   sortedColumn!: string;
   sortedDirection!: string;
+  currentOpenOutputIndex = -1;
 
   @ViewChildren(SBSortableHeaderDirective) headers!: QueryList<SBSortableHeaderDirective>;
 
@@ -49,5 +49,23 @@ export class NgBootstrapTableComponent implements OnInit {
 
   navigateToTestPage(test: TestResult) {
     window.open(`/tests?name=${test.name}&className=${test.className}`, '_self');
+  }
+
+  isOutputOpen(index: number) {
+    return index === this.currentOpenOutputIndex;
+  }
+
+  toggleOutput(index: number) {
+    if (this.isOutputOpen(index))
+      this.currentOpenOutputIndex = -1;
+    else
+      this.currentOpenOutputIndex = index;
+  }
+
+  getLines(output: string) {
+    if (!output)
+      return [];
+
+    return output.split('\n');
   }
 }

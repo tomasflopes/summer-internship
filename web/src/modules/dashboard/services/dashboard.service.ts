@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { TestRun } from '@common/models';
 import { configs } from 'configs';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, shareReplay, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable(
   { providedIn: 'root' }

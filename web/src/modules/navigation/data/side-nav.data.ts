@@ -28,7 +28,7 @@ export const sideNavItems: SideNavItems = {
     link: '/tables',
   },
   settings: {
-    icon: 'settings',
+    icon: 'cog',
     text: 'Settings',
     link: '/settings',
   }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '@modules/dashboard/services/dashboard.service';
+import { SettingsService } from '@modules/settings/services/settings.service';
 
 @Component({
   selector: 'settings',
@@ -8,6 +9,6 @@ import { DashboardService } from '@modules/dashboard/services/dashboard.service'
   providers: []
 })
 export class SettingsComponent {
-  constructor() { }
+  constructor(private settinsService: SettingsService) { }
 
 }

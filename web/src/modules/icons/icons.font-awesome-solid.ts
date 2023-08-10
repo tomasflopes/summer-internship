@@ -18,6 +18,7 @@ import {
   faTable,
   faTachometerAlt,
   faUser,
+  faCog,
   faArrowsRotate
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -36,6 +37,7 @@ export const fontAwesomeSolidIcons: {
   faChevronUp,
   faColumns,
   faSearch,
+  faCog,
   faTable,
   faTachometerAlt,
   faUser,

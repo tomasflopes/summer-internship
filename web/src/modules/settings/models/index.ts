@@ -1,1 +1,2 @@
-export * from './settings.model';
+export * from './filter.model';
+export * from './filters.model';

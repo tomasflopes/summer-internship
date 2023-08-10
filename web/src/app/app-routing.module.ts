@@ -32,6 +32,11 @@ const routes: Routes = [
       import('modules/charts/charts-routing.module').then(m => m.ChartsRoutingModule),
   },
   {
+    path: 'settings',
+    loadChildren: () =>
+      import('modules/settings/settings-routing.module').then(m => m.SettingsRoutingModule),
+  },
+  {
     path: 'error',
     loadChildren: () =>
       import('modules/error/error-routing.module').then(m => m.ErrorRoutingModule),

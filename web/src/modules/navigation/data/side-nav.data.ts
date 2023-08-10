@@ -7,7 +7,7 @@ export const sideNavSections: SideNavSection[] = [
   },
   {
     text: 'DETAILS',
-    items: ['charts', 'tables'],
+    items: ['charts', 'tables', 'settings'],
   },
 ];
 
@@ -27,4 +27,9 @@ export const sideNavItems: SideNavItems = {
     text: 'Tests',
     link: '/tables',
   },
+  settings: {
+    icon: 'settings',
+    text: 'Settings',
+    link: '/settings',
+  }
 };

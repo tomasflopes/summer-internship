@@ -4,7 +4,7 @@ import { TrxParser } from "../services/TrxParser";
 import { TestRunRepository } from "../repositories/TestRunRepository";
 
 export class TestRunController {
-  constructor(private repo: TestRunRepository) {}
+  constructor(private repo: TestRunRepository) { }
 
   async index(request: Request, response: Response) {
     return response.json(this.repo.findAll());
@@ -48,5 +48,9 @@ export class TestRunController {
       console.log(e);
       return response.status(400).json({ error: e.message });
     }
+  }
+
+  async allNamespaces(request: Request, response: Response) {
+    return response.json(this.repo.allNamespaces());
   }
 }

@@ -15,28 +15,24 @@ export class FilterRepository implements Observer {
   }
 
   findWithName(name: string): Filter {
-    return this.filters.custom.find((filter) => filter.name === name) ||
-      this.filters.predefined.find((filter) => filter.name === name) ||
+    return this.filters.default.find((filter) => filter.name === name) ||
       this.filters.selected.find((filter) => filter.name === name);
   }
 
-  toggleWithName(name: string): void {
+  changeWithName(name: string, value: boolean) {
     const filter = this.findWithName(name);
+
     if (!filter) {
-      throw new Error(`Filter with name ${name} does not exist.`);
+      throw new Error("Filter not found");
     }
 
-    filter.active = !filter.active;
+    filter.active = value;
   }
 
   private updateFilters() {
     if (this.filters === undefined) {
       const filters = {
-        custom: [{
-          name: "test",
-          active: true,
-        }],
-        predefined: [{
+        default: [{
           name: "passed",
           active: true,
         }, {
@@ -60,8 +56,7 @@ export class FilterRepository implements Observer {
     }));
 
     const filters = {
-      custom: this.filters.custom,
-      predefined: this.filters.predefined,
+      default: this.filters.default,
       selected: this.filters.selected.concat(newSelected),
     };
     return filters;
@@ -80,8 +75,7 @@ export class FilterRepository implements Observer {
   }
 
   addAll(filters: Filters): void {
-    filters.custom.forEach((filter) => this.add("custom", filter));
-    filters.predefined.forEach((filter) => this.add("predefined", filter));
+    filters.default.forEach((filter) => this.add("default", filter));
     filters.selected.forEach((filter) => this.add("selected", filter));
   }
 

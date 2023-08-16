@@ -5,6 +5,9 @@ import { DashboardService } from '@modules/dashboard/services/dashboard.service'
 import { SortDirection } from '@modules/tables/directives';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
+import { customFilters } from './filters.custom';
+import { SettingsService } from '@modules/settings/services/settings.service';
+import { Filters } from '@modules/settings/models';
 
 interface SearchResult {
   results: TestResult[];
@@ -17,9 +20,10 @@ interface State {
   searchTerm: string;
   sortColumn: string;
   sortDirection: SortDirection;
-  testTypeFilter: string;
+  selectedFilter: string;
   testStatusFilter: string;
   outputFilter: string;
+  customFilter: string;
 }
 
 function compare(v1: string | undefined, v2: string | undefined) {
@@ -37,22 +41,6 @@ function sort(results: TestResult[], column: string, direction: string): TestRes
       return direction === 'asc' ? res : -res;
     });
   }
-}
-
-const testTypeFilters: {
-  [key: string]: (results: TestResult[]) => TestResult[]
-} = {
-  pow: (results: TestResult[]) => results.filter(result => result.className.includes('POW')),
-  uid: (results: TestResult[]) => results.filter(result => result.className.includes('UID')),
-  stress: (results: TestResult[]) => results.filter(result => result.className.includes('Stress')),
-  all: (results: TestResult[]) => results,
-}
-const testStatusFilters: {
-  [key: string]: (results: TestResult[]) => TestResult[]
-} = {
-  passed: (results: TestResult[]) => results.filter(result => result.outcome === 'Passed'),
-  skipped: (results: TestResult[]) => results.filter(result => result.outcome === 'Skipped'),
-  failed: (results: TestResult[]) => results.filter(result => result.outcome === 'Failed'),
 }
 
 function matches(result: TestResult, term: string, pipe: PipeTransform) {
@@ -78,9 +66,10 @@ export class TestResultService {
     searchTerm: '',
     sortColumn: '',
     sortDirection: '',
-    testTypeFilter: '',
+    selectedFilter: '',
     testStatusFilter: '',
     outputFilter: '',
+    customFilter: '',
   };
 
   constructor(private pipe: LowerCasePipe, private dashboardService: DashboardService) {
@@ -137,8 +126,8 @@ export class TestResultService {
   set sortDirection(sortDirection: SortDirection) {
     this._set({ sortDirection });
   }
-  set testTypeFilter(testTypeFilter: string) {
-    this._set({ testTypeFilter });
+  set selectedFilter(selectedFilter: string) {
+    this._set({ selectedFilter });
   }
   set testStatusFilter(testStatusFilter: string) {
     this._set({ testStatusFilter });
@@ -153,21 +142,24 @@ export class TestResultService {
   }
 
   private _search(): Observable<SearchResult> {
-    const { sortColumn, sortDirection, pageSize, page, searchTerm, testStatusFilter, testTypeFilter } = this._state;
+    const { sortColumn, sortDirection, pageSize, page, searchTerm, testStatusFilter, selectedFilter, customFilter } = this._state;
 
     // 1. sort
     let results = sort(this.lastResults, sortColumn, sortDirection);
-    console.log(results);
 
-    // 2. filter
-    if (testTypeFilters[testTypeFilter] !== undefined)
-      results = testTypeFilters[testTypeFilter](results);
-    if (testStatusFilters[testStatusFilter] !== undefined)
-      results = testStatusFilters[testStatusFilter](results);
+    // 2. apply filters
+    if (selectedFilter)
+      results = results.filter(result => result.className.toLowerCase().includes(selectedFilter.toLowerCase()));
+    if (testStatusFilter)
+      results = results.filter(result => result.outcome.toLowerCase().includes(testStatusFilter.toLowerCase()));
+    if (customFilters[customFilter] !== undefined)
+      results = customFilters[customFilter](results);
+
+    // 2.1. filter output
     if (this._state.outputFilter !== '')
       results = results.filter(result => result.output?.includes(this._state.outputFilter));
 
-    // 2.1. filter keywords
+    // 2.2. filter keywords
     results = results.filter(result => matches(result, searchTerm.toLowerCase(), this.pipe));
     const total = results.length;
 

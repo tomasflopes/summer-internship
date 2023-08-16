@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Filters } from '@modules/settings/models';
+import { SettingsService } from '@modules/settings/services/settings.service';
 import { TestResultService } from '@modules/tables/services';
 
 @Component({
@@ -6,13 +8,19 @@ import { TestResultService } from '@modules/tables/services';
   templateUrl: './test-filters.component.html',
   styleUrls: ['test-filters.component.scss'],
 })
-export class TestFiltersComponent {
-  constructor(private testResultService: TestResultService) { }
+export class TestFiltersComponent implements OnInit {
+  constructor(private testResultService: TestResultService, private settingsService: SettingsService) { }
+
+  filters: Filters = {
+    custom: [],
+    default: [],
+    selected: []
+  }
 
   isFiltersContainerOpen = true;
 
-  handleTestTypeFilterChange(event: any) {
-    this.testResultService.testTypeFilter = event.target.value;
+  handleSelectedFilterChange(event: any) {
+    this.testResultService.selectedFilter = event.target.value;
   }
 
   handleTestStatusFilterChange(event: any) {
@@ -21,5 +29,12 @@ export class TestFiltersComponent {
 
   handleOutputFilterChange(event: any) {
     this.testResultService.outputFilter = event.target.value;
+  }
+
+  ngOnInit(): void {
+    this.settingsService.filters.subscribe((filters) => {
+      this.filters.default = filters.default.filter((filter) => filter.active);
+      this.filters.selected = filters.selected.filter((filter) => filter.active);
+    });
   }
 }

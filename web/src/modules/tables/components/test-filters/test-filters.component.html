@@ -7,40 +7,21 @@
   </button>
   <div [ngbCollapse]="!isFiltersContainerOpen">
     <div class="input-group mb-3">
-      <h3>Test Type</h3>
+      <h3>Status</h3>
       <div>
-        <label class="container">UID
-          <input type="radio" value="uid" (click)="handleTestTypeFilterChange($event)" name="type-of-test">
-          <span class="checkmark"></span>
-        </label>
-        <label class="container">POW
-          <input type="radio" value="pow" (click)="handleTestTypeFilterChange($event)" name="type-of-test">
-          <span class="checkmark"></span>
-        </label>
-        <label class="container">Stress
-          <input type="radio" value="stress" (click)="handleTestTypeFilterChange($event)" name="type-of-test">
-          <span class="checkmark"></span>
-        </label>
-        <label class="container">All
-          <input type="radio" value="all" (click)="handleTestTypeFilterChange($event)" name="type-of-test">
+        <label *ngFor="let filter of filters.default" class="container">{{ filter.name }}
+          <input type="radio" value="{{filter.name}}" (click)="handleTestStatusFilterChange($event)"
+            name="type-of-test">
           <span class="checkmark"></span>
         </label>
       </div>
     </div>
 
     <div class="input-group mb-3">
-      <h3>Status</h3>
+      <h3>Namespace</h3>
       <div>
-        <label class="container">Passed
-          <input type="radio" value="passed" (click)="handleTestStatusFilterChange($event)" name="test-status">
-          <span class="checkmark"></span>
-        </label>
-        <label class="container">Failed
-          <input type="radio" value="failed" (click)="handleTestStatusFilterChange($event)" name="test-status">
-          <span class="checkmark"></span>
-        </label>
-        <label class="container">Skipped
-          <input type="radio" value="skipped" (click)="handleTestStatusFilterChange($event)" name="test-status">
+        <label *ngFor="let filter of filters.selected" class="container">{{ filter.name }}
+          <input type="radio" value="{{filter.name}}" (click)="handleSelectedFilterChange($event)" name="namespace">
           <span class="checkmark"></span>
         </label>
       </div>

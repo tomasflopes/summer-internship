@@ -1,1 +1,42 @@
-@import 'styles/variables.scss';
+@import "styles/variables.scss";
+
+.container {
+  padding: 0;
+  width: 100%;
+}
+
+.container > h2 {
+  font-size: 1.3rem;
+  margin-top: 1rem;
+  margin-left: -0.5rem;
+}
+
+.filters-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.filters-list-item {
+  text-transform: capitalize;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+}
+
+.filters-list li > span {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.filters-list-item button {
+  border: 0;
+  background: transparent;
+  width: 4rem;
+}
+
+.filters-list-item button.active {
+  background: #eee;
+}

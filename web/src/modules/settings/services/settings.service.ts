@@ -14,7 +14,7 @@ export class SettingsService {
   constructor(private http: HttpClient) {
     this.filters$ = new BehaviorSubject<Filters>({
       custom: [],
-      predefined: [],
+      default: [],
       selected: []
     });
     this.fetchSettings().subscribe((data: Filters) => {
@@ -30,24 +30,20 @@ export class SettingsService {
     return this.http
       .get(`${configs.apiUrl}/filters`)
       .pipe(
-        map((data: any) => {
-          const filters: Filters = {
-            custom: [],
-            predefined: [],
-            selected: []
-          };
-          for (const filter of data) {
-            filters[filter.type].push(filter);
-          }
-
-          return filters;
-        }),
+        map((data: any) => data),
         switchMap((data: Filters) => {
-          return this.http.get(`${configs.apiUrl}/runs`).pipe(
+          return this.http.get(`${configs.apiUrl}/filters`).pipe(
             map(() => data)
           );
         }),
       );
+  }
+
+  updateFilter(filter: Filter, value: boolean): Observable<{}> {
+    return this.http
+      .patch(`${configs.apiUrl}/filters/${filter.name}`, {
+        value
+      });
   }
 
   refresh() {

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DashboardService } from '@modules/dashboard/services/dashboard.service';
+import { SettingsService } from '@modules/settings/services/settings.service';
 
 @Component({
   selector: 'refresh-button',
@@ -7,7 +8,7 @@ import { DashboardService } from '@modules/dashboard/services/dashboard.service'
   styleUrls: ['refresh-button.component.scss'],
 })
 export class RefreshButtonComponent {
-  constructor(private dashboardService: DashboardService) { }
+  constructor(private dashboardService: DashboardService, private settingsService: SettingsService) { }
 
   loading = false;
 
@@ -15,6 +16,7 @@ export class RefreshButtonComponent {
     this.loading = true;
 
     this.dashboardService.refresh();
+    this.settingsService.refresh();
 
     // mock delay
     setTimeout(() => {

@@ -152,8 +152,11 @@ export class TestResultService {
       results = results.filter(result => result.className.toLowerCase().includes(selectedFilter.toLowerCase()));
     if (testStatusFilter)
       results = results.filter(result => result.outcome.toLowerCase().includes(testStatusFilter.toLowerCase()));
-    if (customFilters[customFilter] !== undefined)
-      results = customFilters[customFilter](results);
+    if (customFilter) {
+      const filter = customFilters.filter(f => f.name === customFilter)[0];
+      if (filter.action)
+        results = filter.action(results);
+    }
 
     // 2.1. filter output
     if (this._state.outputFilter !== '')

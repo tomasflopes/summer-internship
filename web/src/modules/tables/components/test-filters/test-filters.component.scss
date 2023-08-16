@@ -23,11 +23,21 @@
   flex-direction: column;
 }
 
+.input-group:nth-last-child(1)::after {
+  content: "";
+
+  width: 90%;
+  height: 1px;
+
+  background: #ddd;
+  margin: 2rem auto 1.5rem;
+}
+
 .filters-container > div > div > h3 {
   font-size: 1.25rem;
   font-weight: 600;
 
-  margin: 0 0 0.5rem 0;
+  margin-bottom: 0.5rem;
 
   color: #555;
 }

@@ -5,8 +5,9 @@
       <fa-icon *ngIf="isFiltersContainerOpen" class="filter-icon" [icon]='["fas", "chevron-up"]'></fa-icon>
     </span>
   </button>
-  <div [ngbCollapse]="!isFiltersContainerOpen">
-    <div class="input-group mb-3">
+
+  <div class="filters-collapsible" [ngbCollapse]="!isFiltersContainerOpen">
+    <div *ngIf="filters.default.length > 0" class="input-group mb-3">
       <h3>Status</h3>
       <div>
         <label *ngFor="let filter of filters.default" class="container">{{ filter.name }}
@@ -17,7 +18,7 @@
       </div>
     </div>
 
-    <div class="input-group mb-3">
+    <div *ngIf="filters.selected.length > 0" class="input-group mb-3">
       <h3>Namespace</h3>
       <div>
         <label *ngFor="let filter of filters.selected" class="container">{{ filter.name }}
@@ -26,12 +27,22 @@
         </label>
       </div>
     </div>
+
+    <div *ngIf="filters.custom.length > 0" class="input-group mb-3">
+      <h3>Custom</h3>
+      <div>
+        <label *ngFor="let filter of filters.custom" class="container">{{ filter.name }}
+          <input type="radio" value="{{filter.name}}" (click)="handleSelectedFilterChange($event)" name="custom">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+    </div>
+
     <div class="input-group mb-3">
       <h3>Output Filter</h3>
       <div>
-        <label class="container">
-          <input type="text" (change)="handleOutputFilterChange($event)" name="test-status">
-        </label>
+        <input class="form-control" type="text" placeholder="Filter by output"
+          [(ngModel)]="testResultService.outputFilter" name="test-status">
       </div>
     </div>
   </div>

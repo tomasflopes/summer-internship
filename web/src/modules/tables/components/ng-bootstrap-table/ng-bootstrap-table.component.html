@@ -32,7 +32,7 @@
         <td><ngb-highlight [result]="testResult.description" [term]="testResultService.searchTerm"></ngb-highlight>
         </td>
         <td class="filter-toggler-container">
-          <button class="filter-toggler" type="button" (click)="toggleOutput(i)">
+          <button *ngIf="testResult.output" class="filter-toggler" type="button" (click)="toggleOutput(i)">
             <span>
               <fa-icon *ngIf="isOutputOpen(i)" class="filter-icon" [icon]='["fas", "chevron-up"]'></fa-icon>
               <fa-icon *ngIf="!isOutputOpen(i)" class="filter-icon" [icon]='["fas", "chevron-down"]'></fa-icon>

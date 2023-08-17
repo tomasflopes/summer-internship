@@ -1,4 +1,4 @@
-import { FilterRepository } from "../repositories/FilterRepository";
+import { FilterRepository } from "../repositories";
 
 export class FilterController {
   constructor(private repo: FilterRepository) {}

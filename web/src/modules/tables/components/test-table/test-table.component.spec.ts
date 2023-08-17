@@ -3,15 +3,15 @@ import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NgBootstrapTableComponent } from './ng-bootstrap-table.component';
+import { NgBootstrapTableComponent } from './test-table.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   template: `
-        <sb-ng-bootstrap-table
+        <test-table
             [someInput]="someInput"
             (someFunction)="someFunction($event)"
-        ></sb-ng-bootstrap-table>
+        ></test-table>
     `,
 })
 class TestHostComponent {
@@ -50,6 +50,6 @@ describe('NgBootstrapTableComponent', () => {
   });
 
   it('should display the component', () => {
-    expect(hostComponentNE.querySelector('sb-ng-bootstrap-table')).toEqual(jasmine.anything());
+    expect(hostComponentNE.querySelector('test-table')).toEqual(jasmine.anything());
   });
 });

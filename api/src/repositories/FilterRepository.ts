@@ -1,7 +1,5 @@
-import { Filter } from "../models/Filter";
-import { Filters } from "../models/Filters";
-import { Observer } from "../models/Observer";
-import { TestRunRepository } from "./TestRunRepository";
+import { TestRunRepository } from "../repositories";
+import { Filter, Filters, Observer } from "../models";
 
 export class FilterRepository implements Observer {
   private filters: Filters;
@@ -15,8 +13,10 @@ export class FilterRepository implements Observer {
   }
 
   findWithName(name: string): Filter {
-    return this.filters.default.find((filter) => filter.name === name) ||
-      this.filters.selected.find((filter) => filter.name === name);
+    return this.filters.default.find((filter: Filter) =>
+      filter.name === name
+    ) ||
+      this.filters.selected.find((filter: Filter) => filter.name === name);
   }
 
   changeWithName(name: string, value: boolean) {
@@ -42,7 +42,7 @@ export class FilterRepository implements Observer {
           name: "skipped",
           active: true,
         }],
-        selected: this.testRunRepo.allNamespaces().map((namespace) => ({
+        selected: this.testRunRepo.allNamespaces().map((namespace: string) => ({
           name: namespace,
           active: true,
         })),
@@ -50,7 +50,9 @@ export class FilterRepository implements Observer {
       return filters;
     }
 
-    const newSelected = this.testRunRepo.allNamespaces().map((namespace) => ({
+    const newSelected = this.testRunRepo.allNamespaces().map((
+      namespace: string,
+    ) => ({
       name: namespace,
       active: true,
     }));
@@ -63,7 +65,8 @@ export class FilterRepository implements Observer {
   }
 
   private nameExists(name: string): boolean {
-    return this.filters.filter((filter) => filter.name === name).length > 0;
+    return this.filters.filter((filter: Filter) => filter.name === name)
+      .length > 0;
   }
 
   add(key: string, filter: Filter): void {
@@ -75,8 +78,8 @@ export class FilterRepository implements Observer {
   }
 
   addAll(filters: Filters): void {
-    filters.default.forEach((filter) => this.add("default", filter));
-    filters.selected.forEach((filter) => this.add("selected", filter));
+    filters.default.forEach((filter: Filter) => this.add("default", filter));
+    filters.selected.forEach((filter: Filter) => this.add("selected", filter));
   }
 
   update(): void {

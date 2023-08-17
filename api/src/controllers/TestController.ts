@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { TestRunRepository } from "../repositories/TestRunRepository";
+import { TestRunRepository } from "../repositories";
 
 export class TestController {
   constructor(private repo: TestRunRepository) {}

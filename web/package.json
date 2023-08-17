@@ -1,5 +1,5 @@
 {
-  "name": "perso-dashboard",
+  "name": "test-dashboard",
   "version": "0.1.0",
   "scripts": {
     "build": "npm run build:pug && npm run ng -- build --prod --build-optimizer=true --statsJson=true && npm run build:version",

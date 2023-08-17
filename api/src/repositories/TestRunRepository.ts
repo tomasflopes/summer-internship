@@ -1,6 +1,5 @@
-import { Observable } from "../models/Observable";
-import { TestResult } from "../models/TestResult";
-import { TestRun } from "../models/TestRun";
+import { Observer, TestResult } from "../models";
+import { Observable, Observable, TestRun } from "../models/Observable";
 
 export class TestRunRepository implements Observable {
   private testRuns: TestRun[];
@@ -16,12 +15,12 @@ export class TestRunRepository implements Observable {
   }
 
   findWithClass(id: string, className: string): TestRun[] | undefined {
-    if (!this.testRuns[id]) {
+    if (!this.testRuns[parseInt(id)]) {
       return undefined;
     }
-    return this.testRuns[id].testResults.filter((result) =>
-      result.className === className
-    );
+    return this.testRuns[parseInt(id)].testResults.filter((
+      result: TestResult,
+    ) => result.className === className);
   }
 
   findTestResults(
@@ -63,7 +62,8 @@ export class TestRunRepository implements Observable {
   }
 
   findWithId(runId: string): TestRun | undefined {
-    return this.testRuns[runId];
+    // for now the index on the array is the id
+    return this.testRuns[parseInt(runId)];
   }
 
   allNamespaces(): string[] {

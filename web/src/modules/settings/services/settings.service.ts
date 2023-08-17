@@ -29,19 +29,22 @@ export class SettingsService {
 
   private fetchSettings(): Observable<Filters> {
     const c = this.filters$.getValue().custom;
+
     return this.http
       .get(`${configs.apiUrl}/filters`)
       .pipe(
         map((data: any) => data),
-        switchMap((data: Filters) => {
-          return this.http.get(`${configs.apiUrl}/filters`).pipe(
-            map(() => ({
-              custom: c,
-              default: data.default,
-              selected: data.selected
-            }))
-          );
-        }),
+        switchMap((data: Filters) => (
+          this.http
+            .get(`${configs.apiUrl}/filters`)
+            .pipe(
+              map(() => ({
+                custom: c,
+                default: data.default,
+                selected: data.selected
+              }))
+            )
+        ))
       );
   }
 

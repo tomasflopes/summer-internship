@@ -16,9 +16,7 @@
           <span>Description</span><sb-sort-icon *ngIf='sortedColumn === "description"'
             [direction]="sortedDirection"></sb-sort-icon>
         </th>
-        <th>
-          Peek Output
-        </th>
+        <th>Peek Output</th>
       </tr>
     </thead>
     <tbody *ngFor="let testResult of results$ | async; index as i">

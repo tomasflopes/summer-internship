@@ -1,4 +1,3 @@
-import { LowerCasePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -13,9 +12,9 @@ import { TestResultService } from '@modules/tables/services';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'sb-ng-bootstrap-table',
-  templateUrl: './ng-bootstrap-table.component.html',
-  styleUrls: ['ng-bootstrap-table.component.scss'],
+  selector: 'test-table',
+  templateUrl: './test-table.component.html',
+  styleUrls: ['test-table.component.scss'],
 })
 export class NgBootstrapTableComponent implements OnInit {
   @Input() pageSize = 8;

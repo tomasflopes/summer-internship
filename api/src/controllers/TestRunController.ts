@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 
 import { TrxParser } from "../services/TrxParser";
-import { TestRunRepository } from "../repositories/TestRunRepository";
+import { TestRunRepository } from "../repositories";
 
 export class TestRunController {
-  constructor(private repo: TestRunRepository) { }
+  constructor(private repo: TestRunRepository) {}
 
   async index(request: Request, response: Response) {
     return response.json(this.repo.findAll());

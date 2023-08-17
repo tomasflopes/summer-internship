@@ -74,7 +74,7 @@ describe("TestRunRepositoryTest", () => {
   it("should be able to find a test run by id", () => {
     const testRunRepository = new TestRunRepository();
     testRunRepository.add(mockTestRun);
-    expect(testRunRepository.findWithId(0)).toBe(mockTestRun);
+    expect(testRunRepository.findWithId("0")).toBe(mockTestRun);
   });
 
   it("should be able to list all namespaces", () => {

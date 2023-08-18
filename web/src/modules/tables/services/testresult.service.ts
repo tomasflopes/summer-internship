@@ -52,6 +52,14 @@ function matches(result: TestResult, term: string, pipe: PipeTransform) {
   );
 }
 
+function getOccurances(result: TestResult, term: string, pipe: PipeTransform) {
+  if (term === '') return true;
+  if (!result.output) return false;
+
+  const occurances = pipe.transform(result.output).match(new RegExp(term, 'g'));
+  return occurances ? occurances.length : 0;
+}
+
 @Injectable({ providedIn: 'root' })
 export class TestResultService {
   private _loading$ = new BehaviorSubject<boolean>(true);
@@ -132,8 +140,14 @@ export class TestResultService {
   set testStatusFilter(testStatusFilter: string) {
     this._set({ testStatusFilter });
   }
+  get outputFilter() {
+    return this._state.outputFilter;
+  }
   set outputFilter(outputFilter: string) {
     this._set({ outputFilter });
+  }
+  set customFilter(customFilter: string) {
+    this._set({ customFilter });
   }
 
   private _set(patch: Partial<State>) {
@@ -142,7 +156,7 @@ export class TestResultService {
   }
 
   private _search(): Observable<SearchResult> {
-    const { sortColumn, sortDirection, pageSize, page, searchTerm, testStatusFilter, selectedFilter, customFilter } = this._state;
+    const { sortColumn, sortDirection, pageSize, page, searchTerm, testStatusFilter, selectedFilter, customFilter, outputFilter } = this._state;
 
     // 1. sort
     let results = sort(this.lastResults, sortColumn, sortDirection);
@@ -158,9 +172,14 @@ export class TestResultService {
         results = filter.action(results);
     }
 
-    // 2.1. filter output
-    if (this._state.outputFilter !== '')
-      results = results.filter(result => result.output?.includes(this._state.outputFilter));
+    // 2.1. filter output (and get number of occurances)
+    if (outputFilter !== '') {
+      results = results.map(result => ({ // this needs to be done first to clear previous nOfOccurances
+        ...result,
+        nOfOccurances: getOccurances(result, outputFilter, this.pipe)
+      }))
+      results = results.filter(result => getOccurances(result, outputFilter, this.pipe) > 0);
+    }
 
     // 2.2. filter keywords
     results = results.filter(result => matches(result, searchTerm.toLowerCase(), this.pipe));

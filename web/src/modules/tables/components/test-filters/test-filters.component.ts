@@ -11,6 +11,10 @@ import { TestResultService } from '@modules/tables/services';
 export class TestFiltersComponent implements OnInit {
   constructor(public testResultService: TestResultService, private settingsService: SettingsService) { }
 
+  private lastSelectedFilterRef: HTMLInputElement | null = null;
+  private lastTestStatusFilterRef: HTMLInputElement | null = null;
+  private lastCustomFilterRef: HTMLInputElement | null = null;
+
   filters: Filters = {
     custom: [],
     default: [],
@@ -19,12 +23,31 @@ export class TestFiltersComponent implements OnInit {
 
   isFiltersContainerOpen = false;
 
-  handleSelectedFilterChange(event: any) {
-    this.testResultService.selectedFilter = event.target.value;
+  handleSelectedFilterChange(event: Event) {
+    const selectedFilterRef = event.target as HTMLInputElement;
+    this.testResultService.selectedFilter = selectedFilterRef.value;
+    this.lastSelectedFilterRef = selectedFilterRef;
   }
 
-  handleTestStatusFilterChange(event: any) {
-    this.testResultService.testStatusFilter = event.target.value;
+  handleTestStatusFilterChange(event: Event) {
+    const testStatusFilterRef = event.target as HTMLInputElement;
+    this.testResultService.testStatusFilter = testStatusFilterRef.value;
+    this.lastTestStatusFilterRef = testStatusFilterRef;
+  }
+
+  handleCustomFilterChange(event: Event) {
+    const customFilterRef = event.target as HTMLInputElement;
+    this.testResultService.customFilter = customFilterRef.value;
+    this.lastCustomFilterRef = customFilterRef;
+  }
+
+  handleResetFilters() {
+    this.testResultService.selectedFilter = '';
+    this.testResultService.testStatusFilter = '';
+    this.testResultService.outputFilter = '';
+    if (this.lastSelectedFilterRef) this.lastSelectedFilterRef.checked = false;
+    if (this.lastTestStatusFilterRef) this.lastTestStatusFilterRef.checked = false;
+    if (this.lastCustomFilterRef) this.lastCustomFilterRef.checked = false;
   }
 
   ngOnInit(): void {

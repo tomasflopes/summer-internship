@@ -1,8 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { TestRun } from "@common/models";
 import { configs } from "configs";
-import { BehaviorSubject, Observable, map, of, switchMap } from "rxjs";
+import { BehaviorSubject, Observable, map, mergeMap, of, switchMap } from "rxjs";
 import { Filter, Filters } from "../models";
 import { customFilters } from "@modules/tables/services/filters.custom";
 
@@ -10,14 +9,13 @@ import { customFilters } from "@modules/tables/services/filters.custom";
   { providedIn: 'root' }
 )
 export class SettingsService {
-  private filters$: BehaviorSubject<Filters>;
+  private filters$: BehaviorSubject<Filters> = new BehaviorSubject<Filters>({
+    custom: customFilters,
+    default: [],
+    selected: []
+  });
 
   constructor(private http: HttpClient) {
-    this.filters$ = new BehaviorSubject<Filters>({
-      custom: customFilters,
-      default: [],
-      selected: []
-    });
     this.fetchSettings().subscribe((data: Filters) => {
       this.filters$.next(data);
     });
@@ -33,18 +31,20 @@ export class SettingsService {
     return this.http
       .get(`${configs.apiUrl}/filters`)
       .pipe(
-        map((data: any) => data),
-        switchMap((data: Filters) => (
-          this.http
-            .get(`${configs.apiUrl}/filters`)
-            .pipe(
-              map(() => ({
-                custom: c,
-                default: data.default,
-                selected: data.selected
-              }))
-            )
-        ))
+        map((data: any) => {
+          // ? workaround to remove duplicates (should be fixed in fetching logic)
+          const selected = data.selected.filter((filter: Filter, index: number, self: Filter[]) =>
+            index === self.findIndex((f: Filter) => (
+              f.name === filter.name
+            ))
+          );
+
+          return {
+            custom: c,
+            default: data.default,
+            selected: selected
+          }
+        })
       );
   }
 

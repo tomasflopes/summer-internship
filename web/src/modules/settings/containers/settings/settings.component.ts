@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from '@modules/dashboard/services/dashboard.service';
 import { Filter, Filters } from '@modules/settings/models';
 import { SettingsService } from '@modules/settings/services/settings.service';
 

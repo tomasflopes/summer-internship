@@ -52,6 +52,36 @@ table > tbody > tr > th > a:hover {
 
 .filter-toggler {
   border: 0;
-  padding: 0.25rem 0.5rem;
   background: transparent;
+  padding: 0.25rem 0.5rem;
+
+  width: 100%;
+  height: 100%;
+}
+
+.output-icon-container {
+  position: relative;
+}
+
+.occurances-popup {
+  position: absolute;
+
+  top: -0.5rem;
+  right: -1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 1.25rem;
+  height: 1.25rem;
+
+  font-size: 0.6rem;
+  font-weight: bold;
+  text-align: center;
+
+  border-radius: 50%;
+
+  background: #0056b3;
+  color: #fff;
 }

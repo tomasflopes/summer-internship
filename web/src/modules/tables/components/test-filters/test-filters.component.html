@@ -32,7 +32,7 @@
       <h3>Custom</h3>
       <div>
         <label *ngFor="let filter of filters.custom" class="container">{{ filter.name }}
-          <input type="radio" value="{{filter.name}}" (click)="handleSelectedFilterChange($event)" name="custom">
+          <input type="radio" value="{{filter.name}}" (click)="handleCustomFilterChange($event)" name="custom">
           <span class="checkmark"></span>
         </label>
       </div>
@@ -42,7 +42,8 @@
       <h3>Output Filter</h3>
       <div>
         <input class="form-control" type="text" placeholder="Filter by output"
-          [(ngModel)]="testResultService.outputFilter" name="test-status">
+          [(ngModel)]="testResultService.outputFilter" name="output-filter">
+        <button class="reset-btn mt-3" type="button" (click)="handleResetFilters()">Reset</button>
       </div>
     </div>
   </div>

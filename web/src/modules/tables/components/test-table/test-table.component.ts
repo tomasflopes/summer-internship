@@ -60,11 +60,4 @@ export class NgBootstrapTableComponent implements OnInit {
     else
       this.currentOpenOutputIndex = index;
   }
-
-  getLines(output: string) {
-    if (!output)
-      return [];
-
-    return output.split('\n');
-  }
 }

@@ -31,9 +31,10 @@
         </td>
         <td class="filter-toggler-container">
           <button *ngIf="testResult.output" class="filter-toggler" type="button" (click)="toggleOutput(i)">
-            <span>
+            <span class="output-icon-container">
               <fa-icon *ngIf="isOutputOpen(i)" class="filter-icon" [icon]='["fas", "chevron-up"]'></fa-icon>
               <fa-icon *ngIf="!isOutputOpen(i)" class="filter-icon" [icon]='["fas", "chevron-down"]'></fa-icon>
+              <span *ngIf="testResult.nOfOccurances" class="occurances-popup">{{ testResult.nOfOccurances }}</span>
             </span>
           </button>
         </td>
@@ -43,9 +44,9 @@
         <td scope="row" colspan="4" [ngbCollapse]="!isOutputOpen(i)">
           <div class="card card-body">
             <pre class="output">
-              <span *ngFor="let line of getLines(testResult.output)">
-                {{ line }}
-              </span>
+              <ngb-highlight [result]="testResult?.output === null ? '' : testResult.output" [term]="testResultService.outputFilter">
+                {{ testResult.output }}
+              </ngb-highlight>
             </pre>
           </div>
         </td>

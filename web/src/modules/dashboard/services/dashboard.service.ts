@@ -9,13 +9,10 @@ import { map, switchMap } from 'rxjs/operators';
   { providedIn: 'root' }
 )
 export class DashboardService {
-  private dashboardData$: BehaviorSubject<TestRun[]>;
+  private dashboardData$ = new BehaviorSubject<TestRun[]>([]);
 
   constructor(private http: HttpClient) {
-    this.dashboardData$ = new BehaviorSubject<TestRun[]>([]);
-    this.fetchDashboardData().subscribe((data: TestRun[]) => {
-      this.dashboardData$.next(data);
-    });
+    this.refresh();
   }
 
   get dashboardData() {

@@ -16,9 +16,7 @@ export class SettingsService {
   });
 
   constructor(private http: HttpClient) {
-    this.fetchSettings().subscribe((data: Filters) => {
-      this.filters$.next(data);
-    });
+    this.refresh();
   }
 
   get filters() {

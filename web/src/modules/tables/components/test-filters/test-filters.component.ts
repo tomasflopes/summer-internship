@@ -44,6 +44,7 @@ export class TestFiltersComponent implements OnInit {
   handleResetFilters() {
     this.testResultService.selectedFilter = '';
     this.testResultService.testStatusFilter = '';
+    this.testResultService.customFilter = '';
     this.testResultService.outputFilter = '';
     if (this.lastSelectedFilterRef) this.lastSelectedFilterRef.checked = false;
     if (this.lastTestStatusFilterRef) this.lastTestStatusFilterRef.checked = false;

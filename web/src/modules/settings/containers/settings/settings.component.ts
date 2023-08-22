@@ -17,6 +17,8 @@ export class SettingsComponent implements OnInit {
     selected: []
   };
 
+  private currentOpenIndex = -1;
+
   ngOnInit() {
     this.settingsService.filters.subscribe((data: any) => {
       this.filters = {
@@ -31,5 +33,18 @@ export class SettingsComponent implements OnInit {
     this.settingsService.updateFilter(filter, value).subscribe(() => {
       this.settingsService.refresh();
     });
+  }
+
+  isFilterDescriptionOpen(index: number) {
+    console.log(this.currentOpenIndex, index)
+    return this.currentOpenIndex === index;
+  }
+
+  toggleFilterDescription(index: number) {
+    if (this.currentOpenIndex === index) {
+      this.currentOpenIndex = -1;
+    } else {
+      this.currentOpenIndex = index;
+    }
   }
 }

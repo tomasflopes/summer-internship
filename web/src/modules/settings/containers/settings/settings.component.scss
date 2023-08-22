@@ -20,10 +20,14 @@
 }
 
 .filters-list-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.filters-list-item > div {
   text-transform: capitalize;
 
   display: flex;
-  align-items: center;
   justify-content: space-between;
   margin: 0.5rem 0;
 }
@@ -41,4 +45,11 @@
 
 .filters-list-item button.active {
   background: #eee;
+}
+
+.filter-description {
+  font-size: 1rem;
+  color: #555;
+
+  margin-left: 0.5rem;
 }

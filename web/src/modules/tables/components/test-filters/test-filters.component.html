@@ -1,6 +1,7 @@
 <div class="filters-container">
   <button class="filter-toggler" type="button" (click)="isFiltersContainerOpen = !isFiltersContainerOpen">
-    <span>Filters
+    <span>
+      Filters
       <fa-icon *ngIf="!isFiltersContainerOpen" class="filter-icon" [icon]='["fas", "chevron-down"]'></fa-icon>
       <fa-icon *ngIf="isFiltersContainerOpen" class="filter-icon" [icon]='["fas", "chevron-up"]'></fa-icon>
     </span>
@@ -33,6 +34,7 @@
       <div>
         <label *ngFor="let filter of filters.custom" class="container">{{ filter.name }}
           <input type="radio" value="{{filter.name}}" (click)="handleCustomFilterChange($event)" name="custom">
+          <span class="filter-description-tooltip" *ngIf="filter.description">{{filter.description}}</span>
           <span class="checkmark"></span>
         </label>
       </div>
@@ -40,7 +42,7 @@
 
     <div class="input-group mb-3">
       <h3>Output Filter</h3>
-      <div>
+      <div id="output-filter-container">
         <input class="form-control" type="text" placeholder="Filter by output"
           [(ngModel)]="testResultService.outputFilter" name="output-filter">
         <button class="reset-btn mt-3" type="button" (click)="handleResetFilters()">Reset</button>

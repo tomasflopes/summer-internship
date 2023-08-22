@@ -21,6 +21,7 @@
 .filters-container > div > .input-group {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .input-group:nth-last-child(1)::after {
@@ -30,7 +31,7 @@
   height: 1px;
 
   background: #ddd;
-  margin: 2rem auto 1.5rem;
+  margin: 1.5rem auto;
 }
 
 .filters-container > div > div > h3 {
@@ -44,8 +45,10 @@
 
 /* Customize the label (the container) */
 .container {
-  display: block;
   position: relative;
+  display: block;
+
+  width: 100%;
 
   padding-left: 1.5rem;
   margin-bottom: 0.5rem;
@@ -61,8 +64,11 @@
   text-transform: capitalize;
 }
 
-.container input[type="text"] {
+#output-filter-container {
   width: 100%;
+}
+
+.container input[type="text"] {
   padding: 0.25rem 0.5rem;
 
   border: 1px solid #ccc;
@@ -104,19 +110,19 @@
   background-color: #2196f3;
 }
 
-/* Create the indicator (the dot/circle - hidden when not checked) */
+/* Create the indicator (the circle - hidden when not checked) */
 .checkmark:after {
   content: "";
   position: absolute;
   display: none;
 }
 
-/* Show the indicator (dot/circle) when checked */
+/* Show the indicator (circle) when checked */
 .container input[type="radio"]:checked ~ .checkmark:after {
   display: block;
 }
 
-/* Style the indicator (dot/circle) */
+/* Style the indicator (circle) */
 .container .checkmark:after {
   top: 50%;
   left: 50%;
@@ -131,7 +137,39 @@
 
 .reset-btn {
   border: 0;
-  padding: 0.25rem 0.5rem;
-  background: transparent;
-  align-self: flex-end;
+  padding: 0.25rem 1.5rem;
+  background: rgba(240, 225, 120, 0.752);
+  border-radius: 0.75rem;
+}
+
+.reset-btn:hover {
+  background: rgb(240, 225, 140);
+}
+
+.filter-description-tooltip {
+  position: absolute;
+  z-index: 1;
+  bottom: 110%;
+  left: 50%;
+
+  opacity: 0;
+  transition: opacity 0.3s;
+  visibility: hidden;
+
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+
+  text-align: center;
+  border-radius: 0.25rem;
+
+  width: 10rem;
+  border: 1px solid #ddd;
+
+  text-transform: none;
+}
+
+.container:hover .filter-description-tooltip {
+  opacity: 1;
+  visibility: visible;
+  background: #efefef;
 }

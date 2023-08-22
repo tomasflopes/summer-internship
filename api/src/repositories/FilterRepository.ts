@@ -85,4 +85,8 @@ export class FilterRepository implements Observer {
   update(): void {
     this.filters = this.updateFilters();
   }
+
+  size(): number {
+    return this.filters.default.length + this.filters.selected.length;
+  }
 }

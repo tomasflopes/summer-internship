@@ -9,6 +9,24 @@ export const customFilters: Filter[] = [
   {
     name: "All",
     active: true,
-    action: (results: TestResult[]) => results,
+    action: (results) => results,
   },
+  {
+    name: "With output",
+    active: true,
+    action: (results) => results.filter((result) => result.output),
+    description: "Lists all the tests that have an output."
+  },
+  {
+    name: "Without output",
+    active: true,
+    action: (results) => results.filter((result) => !result.output),
+    description: "Lists all the tests that do not have an output."
+  },
+  {
+    name: "Passed with short output",
+    active: true,
+    action: (results) => results.filter((result) => result.outcome === 'Passed' && result.output && result.output.length < 100),
+    description: "Lists all the tests that have a short output (less than 100 characters)."
+  }
 ];

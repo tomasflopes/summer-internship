@@ -16,7 +16,10 @@
           <span>Description</span><sb-sort-icon *ngIf='sortedColumn === "description"'
             [direction]="sortedDirection"></sb-sort-icon>
         </th>
-        <th>Peek Output</th>
+        <th scope="col" sbSortable="nOfOccurances" (sort)="onSort($event)">
+          <span>Peek Output</span><sb-sort-icon *ngIf='sortedColumn === "nOfOccurances"'
+            [direction]="sortedDirection"></sb-sort-icon>
+        </th>
       </tr>
     </thead>
     <tbody *ngFor="let testResult of results$ | async; index as i">
@@ -40,7 +43,7 @@
         </td>
       </tr>
       <!-- toggleOutput -->
-      <tr>
+      <tr *ngIf="testResult.output">
         <td scope="row" colspan="4" [ngbCollapse]="!isOutputOpen(i)">
           <div class="card card-body">
             <pre class="output">

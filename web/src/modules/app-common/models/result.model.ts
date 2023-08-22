@@ -1,8 +1,8 @@
 export interface TestResult {
-  [key: string]: string | undefined;
+  [key: string]: string | number | undefined;
   id: string;
   name: string;
-  outcome: string;
+  outcome: 'Passed' | 'Failed' | 'Skipped';
   duration: string;
   startTime: string;
   endTime: string;
@@ -10,4 +10,5 @@ export interface TestResult {
   description: string;
   className: string;
   output?: string;
+  nOfOccurances: number;
 }

@@ -1,13 +1,11 @@
-import { DecimalPipe, LowerCasePipe } from '@angular/common';
+import { LowerCasePipe } from '@angular/common';
 import { Injectable, PipeTransform } from '@angular/core';
-import { TestResult, TestRun } from '@common/models';
+import { TestResult } from '@common/models';
 import { DashboardService } from '@modules/dashboard/services/dashboard.service';
 import { SortDirection } from '@modules/tables/directives';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { customFilters } from './filters.custom';
-import { SettingsService } from '@modules/settings/services/settings.service';
-import { Filters } from '@modules/settings/models';
 
 interface SearchResult {
   results: TestResult[];
@@ -26,35 +24,36 @@ interface State {
   customFilter: string;
 }
 
-function compare(v1: string | undefined, v2: string | undefined) {
+function compare(v1: string | number | undefined, v2: string | number | undefined) {
+  if (v1 === undefined && v2)
+    return -1;
+  if (v1 && v2 === undefined)
+    return 1;
   if (v1 === undefined || v2 === undefined)
     return 0;
+
   return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 }
 
 function sort(results: TestResult[], column: string, direction: string): TestResult[] {
-  if (direction === '') {
+  if (direction === '')
     return results;
-  } else {
-    return [...results].sort((a, b) => {
-      const res = compare(a[column], b[column]);
-      return direction === 'asc' ? res : -res;
-    });
-  }
+
+  return [...results].sort((a, b) => {
+    const res = compare(a[column], b[column]);
+    return direction === 'asc' ? res : -res;
+  });
 }
 
 function matches(result: TestResult, term: string, pipe: PipeTransform) {
-  return (
-    result.className.toLowerCase().includes(term.toLowerCase()) ||
+  return result.className.toLowerCase().includes(term.toLowerCase()) ||
     pipe.transform(result.description).includes(term) ||
-    pipe.transform(result.name).includes(term) ||
-    pipe.transform(result.id).includes(term)
-  );
+    pipe.transform(result.name).includes(term);
 }
 
-function getOccurances(result: TestResult, term: string, pipe: PipeTransform) {
-  if (term === '') return true;
-  if (!result.output) return false;
+function getOccurances(result: TestResult, term: string, pipe: PipeTransform): number {
+  if (term === '') return 0;
+  if (!result.output) return 0;
 
   const occurances = pipe.transform(result.output).match(new RegExp(term, 'g'));
   return occurances ? occurances.length : 0;
@@ -158,10 +157,17 @@ export class TestResultService {
   private _search(): Observable<SearchResult> {
     const { sortColumn, sortDirection, pageSize, page, searchTerm, testStatusFilter, selectedFilter, customFilter, outputFilter } = this._state;
 
-    // 1. sort
-    let results = sort(this.lastResults, sortColumn, sortDirection);
+    // 1. Get no. of occurances in output
+    let results = this.lastResults.map(result => ({ // this needs to be done first to clear previous nOfOccurances
+      ...result,
+      nOfOccurances: getOccurances(result, outputFilter, this.pipe)
+    }));
 
-    // 2. apply filters
+    // 2. sort
+    results = sort(results, sortColumn, sortDirection);
+
+    console.log({ results })
+    // 3. apply filters
     if (selectedFilter)
       results = results.filter(result => result.className.toLowerCase().includes(selectedFilter.toLowerCase()));
     if (testStatusFilter)
@@ -172,20 +178,16 @@ export class TestResultService {
         results = filter.action(results);
     }
 
-    // 2.1. filter output (and get number of occurances)
-    if (outputFilter !== '') {
-      results = results.map(result => ({ // this needs to be done first to clear previous nOfOccurances
-        ...result,
-        nOfOccurances: getOccurances(result, outputFilter, this.pipe)
-      }))
-      results = results.filter(result => getOccurances(result, outputFilter, this.pipe) > 0);
-    }
 
-    // 2.2. filter keywords
+    // 4. filter output 
+    if (outputFilter !== '')
+      results = results.filter(result => result.nOfOccurances > 0);
+
+    // 5. filter keywords
     results = results.filter(result => matches(result, searchTerm.toLowerCase(), this.pipe));
     const total = results.length;
 
-    // 3. paginate
+    // 6. paginate
     results = results.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
     return of({ results, total });
   }

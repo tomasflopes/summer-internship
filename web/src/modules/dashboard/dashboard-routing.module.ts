@@ -25,10 +25,6 @@ export const ROUTES: Routes = [
           text: 'Dashboard',
           active: true
         },
-        {
-          text: 'Charts',
-          link: '/charts',
-        },
       ],
     } as SBRouteData,
   },

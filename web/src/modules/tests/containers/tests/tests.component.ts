@@ -29,6 +29,10 @@ export class TestsComponent implements OnInit {
     this.currentRunIndex = i;
   }
 
+  isActive(i: number) {
+    return i === this.currentRunIndex;
+  }
+
   ngOnInit() {
     const name = this.route.snapshot.queryParamMap.get('name');
     const className = this.route.snapshot.queryParamMap.get('className');

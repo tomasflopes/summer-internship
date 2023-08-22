@@ -45,16 +45,17 @@
       <charts-duration [durations]="durations"></charts-duration>
     </div>
 
-    <ol *ngIf="results[currentRunIndex].output !== undefined" class="run-selector mb-4">
-      <li [ngClass]="i === 0 ? 'mx-2' : 'mx-4'" *ngFor="let result of results; index as i" [class]>
-        <button (click)="handleRunIndexChange(i)">{{result.runName}}</button>
+    <ol class="run-selector mb-4">
+      <li [ngClass]="i === 0 ? 'mx-2' : 'mx-4'" *ngFor="let result of results; index as i">
+        <button [ngClass]="isActive(i) ? 'active' : ''" (click)="handleRunIndexChange(i)">{{result.runName}}</button>
       </li>
     </ol>
 
-    <sb-card *ngIf="results[currentRunIndex].output !== undefined">
+    <sb-card>
       <div class="card-header">Output</div>
       <div class="card-body">
-        <pre>{{ results[currentRunIndex].output }}</pre>
+        <pre *ngIf="results[currentRunIndex].output">{{ results[currentRunIndex].output }}</pre>
+        <div *ngIf="!results[currentRunIndex].output">No output.</div>
       </div>
     </sb-card>
   </div>

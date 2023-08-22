@@ -58,10 +58,10 @@ export class ChartsPieComponent implements OnInit, AfterViewInit {
         labels: ['Passed', 'Failed', 'Skipped'],
         datasets: [
           {
-            data: [this.runs[0]?.passed, this.runs[0]?.failed, this.runs[0]?.skipped],
+            data: [this.runs[this.runs.length - 1]?.passed, this.runs[this.runs.length - 1]?.failed, this.runs[this.runs.length - 1]?.skipped],
             backgroundColor: ['#1cc88a', '#e74a3b', '#f6c23e'],
             hoverBackgroundColor: ['#17a673', '#e74a3b', '#f6c23e'],
-            hoverBorderColor: 'rgba(234, 236, 244, 1)',
+            hoverBorderColor: 'rgb(234, 236, 244)',
           },
         ]
       }

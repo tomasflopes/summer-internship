@@ -3,10 +3,12 @@
     <h2>Default</h2>
     <ul class="filters-list">
       <li class="filters-list-item" *ngFor="let filter of filters.default">
-        {{ filter.name }}
-        <div class="toggle-filters">
-          <button (click)="updateFilter(filter, true)" [ngClass]="filter.active ? 'active' : ''">ON</button>
-          <button (click)="updateFilter(filter, false)" [ngClass]="!filter.active ? 'active' : ''">OFF</button>
+        <div>
+          {{ filter.name }}
+          <div class="toggle-filters">
+            <button (click)="updateFilter(filter, true)" [ngClass]="filter.active ? 'active' : ''">ON</button>
+            <button (click)="updateFilter(filter, false)" [ngClass]="!filter.active ? 'active' : ''">OFF</button>
+          </div>
         </div>
       </li>
       <li *ngIf="filters.default.length === 0">
@@ -17,10 +19,12 @@
     <h2>Selected</h2>
     <ul class="filters-list">
       <li class="filters-list-item" *ngFor="let filter of filters.selected">
-        {{ filter.name }}
-        <div class="toggle-filters">
-          <button (click)="updateFilter(filter, true)" [ngClass]="filter.active ? 'active' : ''">ON</button>
-          <button (click)="updateFilter(filter, false)" [ngClass]="!filter.active ? 'active' : ''">OFF</button>
+        <div>
+          {{ filter.name }}
+          <div class="toggle-filters">
+            <button (click)="updateFilter(filter, true)" [ngClass]="filter.active ? 'active' : ''">ON</button>
+            <button (click)="updateFilter(filter, false)" [ngClass]="!filter.active ? 'active' : ''">OFF</button>
+          </div>
         </div>
       </li>
       <li *ngIf="filters.selected.length === 0">
@@ -30,12 +34,24 @@
 
     <h2>Custom</h2>
     <ul class="filters-list">
-      <li class="filters-list-item" *ngFor="let filter of filters.custom">
-        {{ filter.name }}
-        <div class="toggle-filters">
-          <button (click)="updateFilter(filter, true)" [ngClass]="filter.active ? 'active' : ''">ON</button>
-          <button (click)="updateFilter(filter, false)" [ngClass]="!filter.active ? 'active' : ''">OFF</button>
+      <li class="filters-list-item" *ngFor="let filter of filters.custom; index as i">
+        <div>
+          <div>
+            {{ filter.name }}
+            <button *ngIf="filter.description" (click)="toggleFilterDescription(i)">
+              <fa-icon *ngIf="!isFilterDescriptionOpen(i)" class="filter-icon"
+                [icon]='["fas", "chevron-down"]'></fa-icon>
+              <fa-icon *ngIf="isFilterDescriptionOpen(i)" class="filter-icon" [icon]='["fas", "chevron-up"]'></fa-icon>
+            </button>
+          </div>
+          <div class="toggle-filters">
+            <button (click)="updateFilter(filter, true)" [ngClass]="filter.active ? 'active' : ''">ON</button>
+            <button (click)="updateFilter(filter, false)" [ngClass]="!filter.active ? 'active' : ''">OFF</button>
+          </div>
         </div>
+        <article class="filter-description" *ngIf="filter.description" [ngbCollapse]="!isFilterDescriptionOpen(i)">
+          {{ filter.description }}
+        </article>
       </li>
       <li *ngIf="filters.custom.length === 0">
         <span>No filters...</span>

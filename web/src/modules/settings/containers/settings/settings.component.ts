@@ -36,7 +36,6 @@ export class SettingsComponent implements OnInit {
   }
 
   isFilterDescriptionOpen(index: number) {
-    console.log(this.currentOpenIndex, index)
     return this.currentOpenIndex === index;
   }
 

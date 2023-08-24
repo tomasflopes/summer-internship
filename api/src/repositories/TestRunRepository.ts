@@ -1,5 +1,4 @@
-import { Observer, TestResult } from "../models";
-import { Observable, Observable, TestRun } from "../models/Observable";
+import { Observable, Observer, TestResult, TestRun } from "../models";
 
 export class TestRunRepository implements Observable {
   private testRuns: TestRun[];

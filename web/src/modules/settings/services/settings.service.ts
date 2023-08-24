@@ -24,7 +24,7 @@ export class SettingsService {
   }
 
   private fetchSettings(): Observable<Filters> {
-    const c = this.filters$.getValue().custom;
+    const customSettingsValue = this.filters$.getValue().custom;
 
     return this.http
       .get(`${configs.apiUrl}/filters`)
@@ -38,7 +38,7 @@ export class SettingsService {
           );
 
           return {
-            custom: c,
+            custom: customSettingsValue,
             default: data.default,
             selected: selected
           }

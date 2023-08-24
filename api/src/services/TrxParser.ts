@@ -2,7 +2,7 @@ import { XMLParser } from "fast-xml-parser";
 import { TestRun } from "../models/TestRun";
 
 export class TrxParser {
-  parse(xml: string, createdAt: Date): TestRun {
+  parse(xml: string, createdAt: Date): Omit<TestRun, "name"> {
     const options = {
       attributeNamePrefix: "@",
       ignoreAttributes: false,

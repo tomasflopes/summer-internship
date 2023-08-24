@@ -25,4 +25,4 @@ export class SideNavService {
   setExpanded(hash: string, expanded: boolean) {
     expandedTable[hash] = expanded;
   }
-}
+} 

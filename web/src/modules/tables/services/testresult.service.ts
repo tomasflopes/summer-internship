@@ -166,7 +166,6 @@ export class TestResultService {
     // 2. sort
     results = sort(results, sortColumn, sortDirection);
 
-    console.log({ results })
     // 3. apply filters
     if (selectedFilter)
       results = results.filter(result => result.className.toLowerCase().includes(selectedFilter.toLowerCase()));

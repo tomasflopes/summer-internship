@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
 import { TestRunRepository } from "../repositories";
 
@@ -6,7 +6,7 @@ export class TestController {
   constructor(private repo: TestRunRepository) {}
 
   async show(request: Request, response: Response) {
-    const { name, className } = request.query;
+    const { name, className } = request.query as { name: string; className: string };
 
     const tests = this.repo.findTestResults(name, className);
 
